@@ -67,7 +67,7 @@ a { color: var(--color-accent); }
 .site-nav ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
 .site-nav a { color: var(--color-text); text-decoration: none; padding: 0.5rem 0; display: inline-block; }
 .site-nav a:hover { color: var(--color-accent); }
-.site-nav a[aria-current="page"] { font-weight: 700; }
+.site-nav a.is-current { font-weight: 700; }
 
 .nav-toggle {
   display: none;

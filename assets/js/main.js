@@ -74,15 +74,24 @@
       if (url.pathname === "/watch") { id = url.searchParams.get("v"); }
       else if (parts[1] === "shorts" || parts[1] === "embed") { id = parts[2]; }
     } else if (host === "youtu.be") {
-      id = url.pathname.slice(1);
+      id = url.pathname.split("/")[1];
     }
     if (id && idPattern.test(id)) {
       return "https://www.youtube-nocookie.com/embed/" + id;
     }
 
     if (host === "vimeo.com" || host === "player.vimeo.com") {
-      var match = url.pathname.match(/(\d{5,})/);
-      if (match) { return "https://player.vimeo.com/video/" + match[1]; }
+      var segments = url.pathname.split("/").filter(Boolean);
+      var at = -1;
+      for (var i = 0; i < segments.length; i++) {
+        if (/^\d{5,}$/.test(segments[i])) { at = i; break; }
+      }
+      var videoId = at >= 0 ? segments[at] : null;
+      // 비공개(unlisted) 영상: ?h=해시 또는 /영상ID/해시 형태를 지원
+      var hash = url.searchParams.get("h");
+      if (!hash && at >= 0 && host === "vimeo.com") { hash = segments[at + 1] || null; }
+      if (hash && !/^[A-Za-z0-9]{6,20}$/.test(hash)) { hash = null; }
+      if (videoId) { return "https://player.vimeo.com/video/" + videoId + (hash ? "?h=" + hash : ""); }
     }
     return null;
   }
