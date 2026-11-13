@@ -1,0 +1,157 @@
+/* ==========================================================
+   개인 영상 포트폴리오 — 공통 스타일 (뼈대 단계)
+   아래 색상·글꼴 값은 임시이며 확정이 아닙니다.
+   P05 스타일가이드 승인 뒤 이 토큰만 바꾸면 전체에 반영됩니다.
+   ========================================================== */
+:root {
+  /* 임시 디자인 토큰 */
+  --color-bg: #ffffff;
+  --color-surface: #f4f4f5;
+  --color-text: #18181b;
+  --color-muted: #52525b;
+  --color-border: #d4d4d8;
+  --color-accent: #2563eb;
+  --color-on-dark: #ffffff;
+  --font-body: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+
+  /* 레이아웃 */
+  --max-width: 1080px;
+  --header-height: 64px;
+  --radius: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.7;
+}
+
+img, iframe, video { max-width: 100%; }
+h1, h2, h3 { line-height: 1.3; margin: 0 0 0.75rem; }
+p { margin: 0 0 1rem; }
+ul, ol { margin: 0 0 1rem; padding-left: 1.25rem; }
+a { color: var(--color-accent); }
+
+:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+.container { width: min(100% - 2rem, var(--max-width)); margin-inline: auto; }
+
+.skip-link {
+  position: absolute; left: 0.5rem; top: -4rem;
+  background: var(--color-text); color: var(--color-on-dark);
+  padding: 0.5rem 0.75rem; border-radius: var(--radius); z-index: 100;
+}
+.skip-link:focus { top: 0.5rem; }
+
+/* ---------- 공통 상단 메뉴 ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: var(--header-height);
+}
+.brand { font-weight: 700; font-size: 1.125rem; color: var(--color-text); text-decoration: none; }
+
+.site-nav ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+.site-nav a { color: var(--color-text); text-decoration: none; padding: 0.5rem 0; display: inline-block; }
+.site-nav a:hover { color: var(--color-accent); }
+.site-nav a[aria-current="page"] { font-weight: 700; }
+
+.nav-toggle {
+  display: none;
+  background: none; border: 1px solid var(--color-border); border-radius: var(--radius);
+  width: 44px; height: 44px; padding: 0; cursor: pointer;
+  align-items: center; justify-content: center; flex-direction: column; gap: 5px;
+}
+.nav-toggle-bar { display: block; width: 20px; height: 2px; background: var(--color-text); }
+
+/* 모바일: JS가 켜져 있을 때만 햄버거로 접는다 (JS가 없으면 메뉴가 그대로 보인다) */
+@media (max-width: 719px) {
+  .js .nav-toggle { display: inline-flex; }
+  .js .site-nav {
+    display: none;
+    position: absolute; left: 0; right: 0; top: var(--header-height);
+    background: var(--color-bg); border-bottom: 1px solid var(--color-border);
+  }
+  .js .site-nav.is-open { display: block; }
+  .js .site-nav ul { flex-direction: column; gap: 0; padding: 0.5rem 1rem; }
+  .js .site-nav a { display: block; padding: 0.75rem 0; }
+}
+@media (max-width: 719px) {
+  .site-nav ul { flex-wrap: wrap; gap: 1rem; }
+}
+
+/* ---------- 섹션 공통 ---------- */
+.section { padding: 4rem 0; scroll-margin-top: var(--header-height); }
+.section-alt { background: var(--color-surface); }
+.section-title { font-size: 1.75rem; margin-bottom: 1.5rem; }
+.placeholder-note { color: var(--color-muted); font-size: 0.875rem; }
+
+/* ---------- HERO (임시: 디자인 확정 전) ---------- */
+.hero {
+  min-height: 60vh; display: flex; align-items: center;
+  scroll-margin-top: var(--header-height);
+}
+.hero h1 { font-size: clamp(2rem, 6vw, 3.5rem); }
+.hero p { color: var(--color-muted); max-width: 40rem; }
+.button {
+  display: inline-block; padding: 0.75rem 1.25rem; border-radius: var(--radius);
+  background: var(--color-accent); color: var(--color-on-dark); text-decoration: none; font-weight: 600;
+}
+.button:hover { filter: brightness(0.92); }
+
+/* ---------- WORKS ---------- */
+.works-grid {
+  display: grid; gap: 1.5rem; list-style: none; margin: 0; padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.work-card {
+  display: block; height: 100%; text-decoration: none; color: inherit;
+  background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius);
+  overflow: hidden;
+}
+.work-card:hover { border-color: var(--color-accent); }
+.thumb {
+  aspect-ratio: 16 / 9; display: grid; place-items: center;
+  background: var(--color-surface); color: var(--color-muted); font-size: 0.875rem;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.work-card-body { padding: 1rem; }
+.work-card-body h3 { font-size: 1.0625rem; margin-bottom: 0.25rem; }
+.work-card-body p { margin: 0; color: var(--color-muted); font-size: 0.9375rem; }
+
+/* ---------- ABOUT / CONTACT ---------- */
+.about-columns { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.about-columns h3 { font-size: 1.0625rem; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0 0 1rem; }
+.tag-list li { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 999px; padding: 0.125rem 0.75rem; font-size: 0.875rem; }
+.link-list { list-style: none; padding: 0; margin: 0; }
+.link-list li { margin-bottom: 0.5rem; }
+.link-pending { color: var(--color-muted); }
+
+/* ---------- 작품 상세 ---------- */
+.detail { padding: 2rem 0 4rem; }
+.breadcrumb { margin-bottom: 1.5rem; }
+.detail-meta { color: var(--color-muted); margin-bottom: 1.5rem; }
+.video-frame {
+  position: relative; aspect-ratio: 16 / 9; background: #111; color: var(--color-on-dark);
+  border-radius: var(--radius); overflow: hidden; display: grid; place-items: center; margin-bottom: 2rem;
+}
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.detail-section { margin-bottom: 2rem; }
+.detail-section h2 { font-size: 1.25rem; }
+
+/* ---------- 푸터 ---------- */
+.site-footer { border-top: 1px solid var(--color-border); padding: 1.5rem 0; color: var(--color-muted); font-size: 0.875rem; }

@@ -4,9 +4,88 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Portfolio</title>
+  <meta name="description" content="개인 영상 포트폴리오 (제작 중)">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <h1>Portfolio</h1>
-  <p>준비 중입니다. (배포 경로 확인용 임시 페이지)</p>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home">Portfolio</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="메뉴 열기">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="주 메뉴">
+        <ul>
+          <li><a href="#home">HOME</a></li>
+          <li><a href="#works">WORKS</a></li>
+          <li><a href="#about">ABOUT</a></li>
+          <li><a href="#contact">CONTACT</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- 01 HERO (임시: 디자인·문구는 P05 확정 후 교체) -->
+    <section id="home" class="hero">
+      <div class="container">
+        <h1 id="hero-title">Portfolio</h1>
+        <p id="hero-message">준비 중입니다.</p>
+        <p><a class="button" href="#works">작품 보기</a></p>
+      </div>
+    </section>
+
+    <!-- 02 WORKS -->
+    <section id="works" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">WORKS</h2>
+        <ul id="works-grid" class="works-grid"></ul>
+        <noscript><p class="placeholder-note">작품 목록을 보려면 JavaScript가 필요합니다.</p></noscript>
+      </div>
+    </section>
+
+    <!-- 03 ABOUT -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title">ABOUT</h2>
+        <p id="about-intro"></p>
+        <div class="about-columns">
+          <div>
+            <h3>경력</h3>
+            <ul id="about-career"></ul>
+          </div>
+          <div>
+            <h3>핵심 역량</h3>
+            <ul id="about-strengths"></ul>
+          </div>
+          <div>
+            <h3>활용 도구</h3>
+            <ul id="about-tools" class="tag-list"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 CONTACT -->
+    <section id="contact" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">CONTACT</h2>
+        <p id="contact-note"></p>
+        <ul id="contact-links" class="link-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">제작 중인 사이트입니다. 표시된 내용은 임시 데이터입니다.</div>
+  </footer>
+
+  <script src="assets/js/works-data.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
