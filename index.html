@@ -3,9 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Portfolio</title>
-  <meta name="description" content="개인 영상 포트폴리오 (제작 중)">
+  <title>LEE JUNHEE | 영상 기획 · 제작 · 편집 포트폴리오</title>
+  <meta name="description" content="IDEAS IN MOTION. 기획부터 연출, 편집, 모션그래픽까지. 4개 프로젝트 · 5개 영상.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LEE JUNHEE | 영상 기획 · 제작 · 편집 포트폴리오">
+  <meta property="og:description" content="IDEAS IN MOTION. 기획부터 연출, 편집, 모션그래픽까지.">
+  <meta property="og:image" content="https://bbutti79.github.io/Portfolio/assets/img/og.jpg">
+  <meta name="theme-color" content="#FDF7F4">
   <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&amp;display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -13,7 +22,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#home">Portfolio</a>
+      <a class="brand" href="#home"><strong>LEE JUNHEE</strong><span> / PORTFOLIO</span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="메뉴 열기">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
@@ -21,7 +30,7 @@
       </button>
       <nav id="site-nav" class="site-nav" aria-label="주 메뉴">
         <ul>
-          <li><a href="#home">HOME</a></li>
+          <li><a href="#home" class="is-current">HOME</a></li>
           <li><a href="#works">WORKS</a></li>
           <li><a href="#about">ABOUT</a></li>
           <li><a href="#contact">CONTACT</a></li>
@@ -31,58 +40,66 @@
   </header>
 
   <main id="main">
-    <!-- 01 HERO (임시: 디자인·문구는 P05 확정 후 교체) -->
+    <!-- HERO: 문구는 확정안(2026-11-14), 키비주얼 이미지는 교체 가능(assets/img/hero.jpg) -->
     <section id="home" class="hero">
-      <div class="container">
-        <h1 id="hero-title">Portfolio</h1>
-        <p id="hero-message">준비 중입니다.</p>
-        <p><a class="button" href="#works">작품 보기</a></p>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="hero-meta">
+            <p class="eyebrow"><span class="dash" aria-hidden="true"></span>PLANNING · DIRECTING · EDITING · MOTION</p>
+            <p class="badge"><span class="dot" aria-hidden="true"></span>영상 분야 구직 중</p>
+          </div>
+          <h1 class="hero-title">IDEAS IN<br>MOTION<span class="period">.</span></h1>
+          <p class="hero-kr">아이디어를 움직임으로, 이야기를 영상으로.</p>
+          <p class="hero-sub">기획부터 연출, 편집, 모션그래픽까지.</p>
+          <p><a class="button" href="#works">VIEW WORKS <span aria-hidden="true">→</span></a></p>
+        </div>
+        <figure class="hero-visual">
+          <img src="assets/img/hero.jpg" width="1200" height="900" alt="방구석 파이터의 비밀 순찰대의 한 장면: 카펫 위에 나란히 앉은 두 강아지">
+          <figcaption><span>KEY VISUAL</span><span class="bar" aria-hidden="true">|</span>Character Animation / Short Film</figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- 02 WORKS -->
-    <section id="works" class="section section-alt">
+    <!-- 01 WORKS -->
+    <section id="works" class="section">
       <div class="container">
-        <h2 class="section-title">WORKS</h2>
+        <header class="section-head">
+          <h2 class="section-title"><span class="no">01</span><span class="bar" aria-hidden="true"></span>SELECTED WORKS</h2>
+          <p class="section-meta">4 PROJECTS / 5 FILMS</p>
+        </header>
+        <div id="works-featured"></div>
         <ul id="works-grid" class="works-grid"></ul>
         <noscript><p class="placeholder-note">작품 목록을 보려면 JavaScript가 필요합니다.</p></noscript>
       </div>
     </section>
 
-    <!-- 03 ABOUT -->
-    <section id="about" class="section">
+    <!-- 02 ABOUT -->
+    <section id="about" class="section section-line">
       <div class="container">
-        <h2 class="section-title">ABOUT</h2>
-        <p id="about-intro"></p>
-        <div class="about-columns">
-          <div>
-            <h3>경력</h3>
-            <ul id="about-career"></ul>
-          </div>
-          <div>
-            <h3>핵심 역량</h3>
-            <ul id="about-strengths"></ul>
-          </div>
-          <div>
-            <h3>활용 도구</h3>
-            <ul id="about-tools" class="tag-list"></ul>
-          </div>
-        </div>
+        <header class="section-head">
+          <h2 class="section-title"><span class="no">02</span><span class="bar" aria-hidden="true"></span>ABOUT</h2>
+          <p class="section-meta" id="about-name"></p>
+        </header>
+        <div id="about-body"></div>
       </div>
     </section>
 
-    <!-- 04 CONTACT -->
-    <section id="contact" class="section section-alt">
+    <!-- 03 CONTACT -->
+    <section id="contact" class="section section-line">
       <div class="container">
-        <h2 class="section-title">CONTACT</h2>
-        <p id="contact-note"></p>
-        <ul id="contact-links" class="link-list"></ul>
+        <header class="section-head">
+          <h2 class="section-title"><span class="no">03</span><span class="bar" aria-hidden="true"></span>CONTACT</h2>
+        </header>
+        <div id="contact-body"></div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">제작 중인 사이트입니다. 표시된 내용은 임시 데이터입니다.</div>
+    <div class="container footer-inner">
+      <span>LEE JUNHEE · PORTFOLIO</span>
+      <span>2026</span>
+    </div>
   </footer>
 
   <script src="assets/js/works-data.js"></script>

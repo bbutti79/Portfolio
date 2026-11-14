@@ -3,16 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>작품 상세 | Portfolio</title>
+  <title>작품 상세 | LEE JUNHEE</title>
+  <meta name="theme-color" content="#FDF7F4">
   <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&amp;display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body class="detail-page">
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html#home">Portfolio</a>
+      <a class="brand" href="index.html#home"><strong>LEE JUNHEE</strong><span> / PORTFOLIO</span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="메뉴 열기">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
@@ -34,32 +39,11 @@
       <p class="breadcrumb"><a href="index.html#works">← WORKS로 돌아가기</a></p>
 
       <article id="work-detail">
+        <p id="wd-no" class="detail-no"></p>
         <h1 id="wd-title">작품</h1>
-        <p id="wd-meta" class="detail-meta"></p>
-
-        <!-- 최종 영상 -->
-        <div id="wd-video" class="video-frame" role="region" aria-label="최종 영상"><span>영상 준비 중</span></div>
-
-        <section class="detail-section">
-          <h2>프로젝트 개요</h2>
-          <p id="wd-overview"></p>
-        </section>
-
-        <section class="detail-section">
-          <h2>기획 의도</h2>
-          <p id="wd-intent"></p>
-        </section>
-
-        <section class="detail-section">
-          <h2>제작 과정</h2>
-          <ol id="wd-process"></ol>
-        </section>
-
-        <section class="detail-section">
-          <h2>AI 활용 및 사용 도구</h2>
-          <p id="wd-ai-usage"></p>
-          <ul id="wd-ai-tools" class="tag-list"></ul>
-        </section>
+        <div id="wd-parts"></div>
+        <section id="wd-compare" class="detail-block" hidden></section>
+        <section id="wd-docs" class="detail-block" hidden></section>
       </article>
 
       <div id="work-missing" hidden>
@@ -69,12 +53,15 @@
 
       <noscript><p class="placeholder-note">작품 정보를 보려면 JavaScript가 필요합니다.</p></noscript>
 
-      <p><a class="button" href="index.html#works">WORKS로 돌아가기</a></p>
+      <p class="detail-back"><a class="button" href="index.html#works">WORKS로 돌아가기</a></p>
     </div>
   </main>
 
   <footer class="site-footer">
-    <div class="container">제작 중인 사이트입니다. 표시된 내용은 임시 데이터입니다.</div>
+    <div class="container footer-inner">
+      <span>LEE JUNHEE · PORTFOLIO</span>
+      <span>2026</span>
+    </div>
   </footer>
 
   <script src="assets/js/works-data.js"></script>
