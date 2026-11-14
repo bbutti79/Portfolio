@@ -162,7 +162,7 @@
       if (work.featured) {
         var card = make("article", "featured");
         var info = make("div", "featured-info");
-        info.appendChild(make("p", "label", "FEATURED"));
+        info.appendChild(make("p", "label", "Featured"));
         var title = make("h3", "featured-title");
         var titleLink = make("a", "", work.title);
         titleLink.href = workHref(work);
@@ -170,7 +170,7 @@
         info.appendChild(title);
         if (work.subtitle) { info.appendChild(make("p", "featured-sub", work.subtitle)); }
         info.appendChild(make("p", "featured-short", work.short));
-        var more = make("a", "link-arrow", "VIEW PROJECT ");
+        var more = make("a", "link-arrow", "View project ");
         more.href = workHref(work);
         more.appendChild(make("span", "", "→"));
         more.lastChild.setAttribute("aria-hidden", "true");
@@ -246,7 +246,7 @@
     top.appendChild(lead);
 
     var career = make("div", "about-career");
-    career.appendChild(make("h3", "mini-title", "CAREER"));
+    career.appendChild(make("h3", "mini-title", "Career"));
     var list = make("ul", "career-list");
     (about.career || []).forEach(function (row) {
       var li = make("li");
@@ -269,7 +269,7 @@
     box.appendChild(strengths);
 
     var tools = make("div", "tools");
-    tools.appendChild(make("h3", "mini-title", "TOOLS"));
+    tools.appendChild(make("h3", "mini-title", "Tools"));
     (about.toolGroups || []).forEach(function (group) {
       var row = make("div", "tool-group");
       row.appendChild(make("p", "tool-label", group.label));
@@ -308,7 +308,7 @@
     var email = (data.site && data.site.email) || "";
     var valid = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(email);
 
-    box.appendChild(make("p", "contact-label", "E-MAIL"));
+    box.appendChild(make("p", "contact-label", "Email"));
     if (!valid) {
       box.appendChild(make("p", "link-pending", "연락처 준비 중"));
       return;
