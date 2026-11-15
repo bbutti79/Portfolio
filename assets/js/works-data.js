@@ -117,13 +117,13 @@ window.SITE_DATA = {
     {
       id: "work-3",
       no: "03",
-      title: "일상: 10000%",
+      title: "Normal Weekend",
       tag: "EDITING & SOUND",
       short: "평온한 주말 × 10000% 과장 사운드",
-      thumbs: [{ src: "assets/img/work-3.jpg", alt: "일상 10000% 대표 장면: 설거지 스펀지 클로즈업" }],
+      thumbs: [{ src: "assets/img/work-3.jpg", alt: "Normal Weekend 대표 장면: 설거지 스펀지 클로즈업" }],
       parts: [
         {
-          video: { label: "본편", url: "" },
+          video: { label: "본편", url: "https://youtu.be/5ol06Ry-PKA" },
           fields: [
             ["과제", "외부소재 활용 편집"],
             ["유형", "사운드 코미디 숏폼"],
