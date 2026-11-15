@@ -43,11 +43,11 @@ window.SITE_DATA = {
       featured: true,
       title: "방구석 파이터의 비밀 순찰대",
       detailTitle: "방구석 파이터의 비밀 순찰대 + 키네틱타이포",
-      subtitle: "MV + kinetic typography",
+      subtitle: "MV + Kinetic Typography",
       short: "두 강아지의 비밀 순찰, 뮤직비디오와 타이포 모션",
       thumbs: [
-        { src: "assets/img/work-1a.jpg", tag: "Music video", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" },
-        { src: "assets/img/work-1b.jpg", tag: "Kinetic typography", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }
+        { src: "assets/img/work-1a.jpg", tag: "MUSIC VIDEO", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" },
+        { src: "assets/img/work-1b.jpg", tag: "KINETIC TYPOGRAPHY", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }
       ],
       parts: [
         {
@@ -92,7 +92,7 @@ window.SITE_DATA = {
       id: "work-2",
       no: "02",
       title: "크아아앙: 전설의 시작",
-      tag: "Ad film",
+      tag: "AD FILM",
       short: "던전 보스 드래곤의 출근과 퇴근",
       thumbs: [{ src: "assets/img/work-2.jpg", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
       parts: [
@@ -118,7 +118,7 @@ window.SITE_DATA = {
       id: "work-3",
       no: "03",
       title: "일상: 10000%",
-      tag: "Editing & sound",
+      tag: "EDITING & SOUND",
       short: "평온한 주말 × 10000% 과장 사운드",
       thumbs: [{ src: "assets/img/work-3.jpg", alt: "일상 10000% 대표 장면: 설거지 스펀지 클로즈업" }],
       parts: [
@@ -143,7 +143,7 @@ window.SITE_DATA = {
       id: "work-4",
       no: "04",
       title: "마음의 장마",
-      tag: "Campaign film",
+      tag: "CAMPAIGN FILM",
       short: "고립은 장마로, 관심은 노란 우산으로",
       thumbs: [{ src: "assets/img/work-4.jpg", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
       parts: [
