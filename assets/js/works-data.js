@@ -46,8 +46,8 @@ window.SITE_DATA = {
       subtitle: "MV + Kinetic Typography",
       short: "두 강아지의 비밀 순찰, 뮤직비디오와 타이포 모션",
       thumbs: [
-        { src: "assets/img/work-1a.jpg", preview: "assets/video/work-1a.mp4", tag: "MUSIC VIDEO", slate: "TOOLS : Seedance · Google Flow · Runway · Suno", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" },
-        { src: "assets/img/work-1b.jpg", preview: "assets/video/work-1b.mp4", tag: "KINETIC TYPOGRAPHY", slate: "TOOLS : Seedance · Higgsfield · After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }
+        { src: "assets/img/work-1a.jpg", tag: "MUSIC VIDEO", slate: "TOOLS : Seedance · Google Flow · Runway · Suno", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" },
+        { src: "assets/img/work-1b.jpg", tag: "KINETIC TYPOGRAPHY", slate: "TOOLS : Seedance · Higgsfield · After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }
       ],
       parts: [
         {
@@ -94,7 +94,7 @@ window.SITE_DATA = {
       title: "크아아앙: 전설의 시작",
       tag: "AD FILM",
       short: "던전 보스 드래곤의 출근과 퇴근",
-      thumbs: [{ src: "assets/img/work-2.jpg", preview: "assets/video/work-2.mp4", slate: "TOOLS : Google Flow · Suno · Pixabay", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
+      thumbs: [{ src: "assets/img/work-2.jpg", slate: "TOOLS : Google Flow · Suno · Pixabay", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/gJrfZl6HIhc" },
@@ -120,7 +120,7 @@ window.SITE_DATA = {
       title: "Normal Weekend",
       tag: "EDITING & SOUND",
       short: "평온한 주말 × 10000% 과장 사운드",
-      thumbs: [{ src: "assets/img/work-3.jpg", preview: "assets/video/work-3.mp4", slate: "TOOLS : Google Flow · Suno · Pixabay", alt: "Normal Weekend 대표 장면: 설거지 스펀지 클로즈업" }],
+      thumbs: [{ src: "assets/img/work-3.jpg", slate: "TOOLS : Google Flow · Suno · Pixabay", alt: "Normal Weekend 대표 장면: 설거지 스펀지 클로즈업" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/5ol06Ry-PKA" },
@@ -145,7 +145,7 @@ window.SITE_DATA = {
       title: "마음의 장마",
       tag: "CAMPAIGN FILM",
       short: "고립은 장마로, 관심은 노란 우산으로",
-      thumbs: [{ src: "assets/img/work-4.jpg", preview: "assets/video/work-4.mp4", slate: "TOOLS : Google Flow · Midjourney · Suno", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
+      thumbs: [{ src: "assets/img/work-4.jpg", slate: "TOOLS : Google Flow · Midjourney · Suno", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/4BU09Yfcsy4" },

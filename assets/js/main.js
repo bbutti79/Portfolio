@@ -161,7 +161,7 @@
     return block;
   }
 
-  /* ---------- 홈: WORKS (어두운 무대 + 호버 프리뷰) ---------- */
+  /* ---------- 홈: WORKS (정지 이미지 타일, 호버하면 천천히 움직이는 효과는 CSS) ---------- */
   function buildTile(work, thumb, options) {
     var cell = make("article", "tile");
     var media = make("a", "tile-media");
@@ -174,20 +174,6 @@
     img.loading = "lazy";
     media.appendChild(img);
 
-    /* 프리뷰 영상은 호버·화면 진입 때에만 내려받는다(data-src → src) */
-    if (thumb.preview) {
-      var video = make("video", "tile-video");
-      video.muted = true;
-      video.loop = true;
-      video.playsInline = true;
-      video.preload = "none";
-      video.setAttribute("muted", "");
-      video.setAttribute("playsinline", "");
-      video.setAttribute("aria-hidden", "true");
-      video.tabIndex = -1;
-      video.setAttribute("data-src", thumb.preview);
-      media.appendChild(video);
-    }
     cell.appendChild(media);
 
     var meta = make("div", "tile-meta");
@@ -204,9 +190,6 @@
     }
     var row = make("div", "tile-row");
     if (thumb.tag) { row.appendChild(make("p", "tile-tag", thumb.tag)); }
-    var tc = make("p", "tile-tc", "00:00:00:00");
-    tc.setAttribute("aria-hidden", "true");
-    row.appendChild(tc);
     meta.appendChild(row);
     if (options && options.numbered && work.short) { meta.appendChild(make("p", "tile-short", work.short)); }
     if (thumb.slate) { meta.appendChild(make("p", "tile-slate", thumb.slate)); }
@@ -251,65 +234,11 @@
         var item = make("li");
         var first = (work.thumbs || [])[0] || {};
         var merged = {
-          src: first.src, alt: first.alt, preview: first.preview, slate: first.slate,
+          src: first.src, alt: first.alt, slate: first.slate,
           tag: first.tag || work.tag
         };
         item.appendChild(buildTile(work, merged, { numbered: true }));
         grid.appendChild(item);
-      }
-    });
-  }
-
-  /* 프리뷰 재생: 마우스를 올리면(터치 기기는 화면에 60% 들어오면) 4초 루프가 재생되고 타임코드가 올라간다 */
-  function pad2(n) { return (n < 10 ? "0" : "") + n; }
-  function timecode(seconds) {
-    var frames = Math.floor((seconds % 1) * 24);
-    var s = Math.floor(seconds) % 60;
-    var m = Math.floor(seconds / 60) % 60;
-    var h = Math.floor(seconds / 3600);
-    return pad2(h) + ":" + pad2(m) + ":" + pad2(s) + ":" + pad2(frames);
-  }
-
-  function initPreviews() {
-    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var saver = navigator.connection && navigator.connection.saveData;
-    if (reduce || saver) { return; }
-    var hoverable = window.matchMedia && window.matchMedia("(hover: hover)").matches;
-
-    Array.prototype.forEach.call(document.querySelectorAll(".tile"), function (tileNode) {
-      var media = $(".tile-media", tileNode);
-      var video = $(".tile-video", tileNode);
-      var tc = $(".tile-tc", tileNode);
-      if (!media || !video) { return; }
-      var raf = 0;
-
-      function tick() {
-        if (tc) { tc.textContent = timecode(video.currentTime); }
-        raf = window.requestAnimationFrame(tick);
-      }
-      function start() {
-        if (!video.getAttribute("src")) { video.src = video.getAttribute("data-src"); }
-        var played = video.play();
-        if (played && played.catch) { played.catch(function () {}); }
-        tileNode.classList.add("is-playing");
-        window.cancelAnimationFrame(raf);
-        tick();
-      }
-      function stop() {
-        video.pause();
-        tileNode.classList.remove("is-playing");
-        window.cancelAnimationFrame(raf);
-      }
-
-      if (hoverable) {
-        media.addEventListener("mouseenter", start);
-        media.addEventListener("mouseleave", stop);
-        media.addEventListener("focus", start);
-        media.addEventListener("blur", stop);
-      } else if ("IntersectionObserver" in window) {
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) { if (entry.isIntersecting) { start(); } else { stop(); } });
-        }, { threshold: 0.6 }).observe(tileNode);
       }
     });
   }
@@ -535,13 +464,111 @@
     update();
   }
 
+  /* 히어로 하이라이트 릴: 실제 영상(무음 루프) + 재생/일시정지, 진행 바 이동, 챕터 칩(data-start 초) */
+  function initReel() {
+    var reel = $("#reel");
+    var video = $("#reel-video");
+    if (!reel || !video) { return; }
+    var chips = reel.querySelectorAll(".chip");
+    var tag = $(".reel-tag", reel);
+    var fill = $("#reel-fill");
+    var tc = $("#reel-tc");
+    var toggle = $("#reel-toggle");
+    var seek = $("#reel-seek");
+    if (!fill || !tc || !toggle) { return; }
+
+    var FPS = 30;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var userPaused = reduce;      // 움직임 줄이기 설정이면 자동 재생하지 않음
+    var inView = true;
+    var chapter = -1;
+    var frameId = 0;
+
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function fmt(sec) {
+      var s = Math.max(0, sec || 0);
+      return "00:" + pad(Math.floor(s / 60) % 60) + ":" + pad(Math.floor(s) % 60) + ":" + pad(Math.floor((s % 1) * FPS));
+    }
+    function chapterAt(t) {
+      var found = 0;
+      Array.prototype.forEach.call(chips, function (chip, i) {
+        if (t >= Number(chip.getAttribute("data-start")) - 0.05) { found = i; }
+      });
+      return found;
+    }
+    function render() {
+      var d = video.duration || 0;
+      var t = video.currentTime || 0;
+      fill.style.width = (d ? Math.min(100, t / d * 100) : 0).toFixed(2) + "%";
+      tc.textContent = fmt(t) + " / " + fmt(d);
+      var index = chapterAt(t);
+      if (index !== chapter) {
+        chapter = index;
+        Array.prototype.forEach.call(chips, function (chip, i) {
+          chip.classList.toggle("is-on", i === index);
+          chip.setAttribute("aria-pressed", String(i === index));
+        });
+        if (tag && chips[index]) { tag.textContent = "CH " + pad(index + 1) + " · " + chips[index].getAttribute("data-label"); }
+      }
+    }
+    function loop() {
+      render();
+      if (!video.paused) { frameId = window.requestAnimationFrame(loop); }
+    }
+    function syncButton() {
+      var playing = !video.paused;
+      toggle.textContent = playing ? "❚❚" : "▶";
+      toggle.setAttribute("aria-label", playing ? "일시정지" : "재생");
+    }
+    function play() {
+      var promise = video.play();
+      if (promise && promise.catch) { promise.catch(function () { syncButton(); }); }
+    }
+
+    video.addEventListener("play", function () { syncButton(); window.cancelAnimationFrame(frameId); loop(); });
+    video.addEventListener("pause", function () { syncButton(); render(); });
+    video.addEventListener("loadedmetadata", render);
+    video.addEventListener("seeked", render);
+    video.addEventListener("error", function () { reel.classList.add("is-static"); });
+
+    toggle.addEventListener("click", function () {
+      if (video.paused) { userPaused = false; play(); } else { userPaused = true; video.pause(); }
+    });
+    Array.prototype.forEach.call(chips, function (chip) {
+      chip.addEventListener("click", function () {
+        video.currentTime = Number(chip.getAttribute("data-start")) || 0;
+        render();
+        if (!userPaused && video.paused) { play(); }
+      });
+    });
+    if (seek) {
+      seek.addEventListener("click", function (event) {
+        var box = seek.getBoundingClientRect();
+        var ratio = Math.min(0.999, Math.max(0, (event.clientX - box.left) / box.width));
+        if (video.duration) { video.currentTime = ratio * video.duration; render(); }
+      });
+    }
+    // 화면 밖에서는 멈춰서 리소스를 아낀다(사용자가 직접 멈춘 경우는 그대로 유지)
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (inView && !userPaused && video.paused) { play(); }
+        if (!inView && !video.paused) { video.pause(); }
+      }, { threshold: 0.25 }).observe(reel);
+    }
+
+    render();
+    syncButton();
+    if (!userPaused) { play(); }
+  }
+
   initNav();
+  initReel();
   initPlayhead();
   if ($("#works-grid")) { initScrollSpy(); }
   renderWorks();
   renderAbout();
   renderContact();
   renderDetail();
-  initPreviews();
   initReveal();
 })();
