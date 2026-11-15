@@ -97,7 +97,7 @@ window.SITE_DATA = {
       thumbs: [{ src: "assets/img/work-2.jpg", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
       parts: [
         {
-          video: { label: "본편", url: "" },
+          video: { label: "본편", url: "https://youtu.be/gJrfZl6HIhc" },
           fields: [
             ["과제", "AI 활용 30초 광고 제작"],
             ["유형", "판타지 코미디 광고"],
@@ -148,7 +148,7 @@ window.SITE_DATA = {
       thumbs: [{ src: "assets/img/work-4.jpg", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
       parts: [
         {
-          video: { label: "본편", url: "" },
+          video: { label: "본편", url: "https://youtu.be/4BU09Yfcsy4" },
           fields: [
             ["과제", "공모전 주제에 맞는 영상 제작"],
             ["주제", "자살예방 공익 캠페인"],
