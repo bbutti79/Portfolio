@@ -150,7 +150,59 @@
     return block;
   }
 
-  /* ---------- 홈: WORKS ---------- */
+  /* ---------- 홈: WORKS (어두운 무대 + 호버 프리뷰) ---------- */
+  function buildTile(work, thumb, options) {
+    var cell = make("article", "tile");
+    var media = make("a", "tile-media");
+    media.href = workHref(work);
+    media.setAttribute("aria-label", work.title + " — " + (thumb.tag || "영상"));
+
+    var img = make("img", "tile-poster");
+    img.src = thumb.src;
+    img.alt = thumb.alt || "";
+    img.loading = "lazy";
+    media.appendChild(img);
+
+    /* 프리뷰 영상은 호버·화면 진입 때에만 내려받는다(data-src → src) */
+    if (thumb.preview) {
+      var video = make("video", "tile-video");
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = "none";
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("aria-hidden", "true");
+      video.tabIndex = -1;
+      video.setAttribute("data-src", thumb.preview);
+      media.appendChild(video);
+    }
+    cell.appendChild(media);
+
+    var meta = make("div", "tile-meta");
+    if (options && options.numbered) {
+      var title = make("h3", "tile-title");
+      title.appendChild(make("span", "no", work.no));
+      var bar = make("span", "bar");
+      bar.setAttribute("aria-hidden", "true");
+      title.appendChild(bar);
+      var titleLink = make("a", "", work.title);
+      titleLink.href = workHref(work);
+      title.appendChild(titleLink);
+      meta.appendChild(title);
+    }
+    var row = make("div", "tile-row");
+    if (thumb.tag) { row.appendChild(make("p", "tile-tag", thumb.tag)); }
+    var tc = make("p", "tile-tc", "00:00:00:00");
+    tc.setAttribute("aria-hidden", "true");
+    row.appendChild(tc);
+    meta.appendChild(row);
+    if (options && options.numbered && work.short) { meta.appendChild(make("p", "tile-short", work.short)); }
+    if (thumb.slate) { meta.appendChild(make("p", "tile-slate", thumb.slate)); }
+    cell.appendChild(meta);
+    return cell;
+  }
+
   function renderWorks() {
     var featuredBox = $("#works-featured");
     var grid = $("#works-grid");
@@ -178,19 +230,7 @@
 
         var thumbs = make("div", "featured-thumbs");
         (work.thumbs || []).forEach(function (thumb) {
-          /* 태그는 이미지 위가 아니라 아래 캡션으로 둬서 장면이 가려지지 않게 한다 */
-          var cell = make("div", "thumb-item");
-          var link = make("a", "thumb-link");
-          link.href = workHref(work);
-          link.setAttribute("aria-label", work.title + " — " + (thumb.tag || "영상"));
-          var img = make("img");
-          img.src = thumb.src;
-          img.alt = thumb.alt || "";
-          img.loading = "lazy";
-          link.appendChild(img);
-          cell.appendChild(link);
-          if (thumb.tag) { cell.appendChild(make("p", "thumb-caption", thumb.tag)); }
-          thumbs.appendChild(cell);
+          thumbs.appendChild(buildTile(work, thumb, {}));
         });
 
         card.appendChild(info);
@@ -198,38 +238,92 @@
         featuredBox.appendChild(card);
       } else {
         var item = make("li");
-        var anchor = make("a", "work-card");
-        anchor.href = workHref(work);
-
-        var thumbBox = make("div", "thumb");
-        var first = (work.thumbs || [])[0];
-        if (first) {
-          var image = make("img");
-          image.src = first.src;
-          image.alt = first.alt || "";
-          image.loading = "lazy";
-          thumbBox.appendChild(image);
-        }
-
-        var body = make("div", "work-card-body");
-        var heading = make("h3", "card-title");
-        heading.appendChild(make("span", "no", work.no));
-        heading.appendChild(make("span", "bar"));
-        heading.lastChild.setAttribute("aria-hidden", "true");
-        heading.appendChild(make("span", "", work.title));
-        body.appendChild(heading);
-        if (work.tag) { body.appendChild(make("p", "card-tag", work.tag)); }
-        body.appendChild(make("p", "card-short", work.short));
-        var arrow = make("span", "arrow", "→");
-        arrow.setAttribute("aria-hidden", "true");
-        body.appendChild(arrow);
-
-        anchor.appendChild(thumbBox);
-        anchor.appendChild(body);
-        item.appendChild(anchor);
+        var first = (work.thumbs || [])[0] || {};
+        var merged = {
+          src: first.src, alt: first.alt, preview: first.preview, slate: first.slate,
+          tag: first.tag || work.tag
+        };
+        item.appendChild(buildTile(work, merged, { numbered: true }));
         grid.appendChild(item);
       }
     });
+  }
+
+  /* 프리뷰 재생: 마우스를 올리면(터치 기기는 화면에 60% 들어오면) 4초 루프가 재생되고 타임코드가 올라간다 */
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function timecode(seconds) {
+    var frames = Math.floor((seconds % 1) * 24);
+    var s = Math.floor(seconds) % 60;
+    var m = Math.floor(seconds / 60) % 60;
+    var h = Math.floor(seconds / 3600);
+    return pad2(h) + ":" + pad2(m) + ":" + pad2(s) + ":" + pad2(frames);
+  }
+
+  function initPreviews() {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var saver = navigator.connection && navigator.connection.saveData;
+    if (reduce || saver) { return; }
+    var hoverable = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+    Array.prototype.forEach.call(document.querySelectorAll(".tile"), function (tileNode) {
+      var media = $(".tile-media", tileNode);
+      var video = $(".tile-video", tileNode);
+      var tc = $(".tile-tc", tileNode);
+      if (!media || !video) { return; }
+      var raf = 0;
+
+      function tick() {
+        if (tc) { tc.textContent = timecode(video.currentTime); }
+        raf = window.requestAnimationFrame(tick);
+      }
+      function start() {
+        if (!video.getAttribute("src")) { video.src = video.getAttribute("data-src"); }
+        var played = video.play();
+        if (played && played.catch) { played.catch(function () {}); }
+        tileNode.classList.add("is-playing");
+        window.cancelAnimationFrame(raf);
+        tick();
+      }
+      function stop() {
+        video.pause();
+        tileNode.classList.remove("is-playing");
+        window.cancelAnimationFrame(raf);
+      }
+
+      if (hoverable) {
+        media.addEventListener("mouseenter", start);
+        media.addEventListener("mouseleave", stop);
+        media.addEventListener("focus", start);
+        media.addEventListener("blur", stop);
+      } else if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) { if (entry.isIntersecting) { start(); } else { stop(); } });
+        }, { threshold: 0.6 }).observe(tileNode);
+      }
+    });
+  }
+
+  /* 스크롤 등장: 요소가 화면에 들어오면 아래에서 올라오며 나타난다(움직임 줄이기 설정이면 건너뜀) */
+  function initReveal() {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) { return; }
+    var targets = document.querySelectorAll(".section-head, .featured, .tile, .about-top, .strength, .tools, .contact-email, .contact-actions");
+    if (!targets.length) { return; }
+    document.documentElement.classList.add("reveal-on");
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add("is-in"); observer.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    Array.prototype.forEach.call(targets, function (node, index) {
+      node.setAttribute("data-reveal", "");
+      node.style.transitionDelay = ((index % 3) * 80) + "ms";
+      observer.observe(node);
+    });
+    /* 안전장치: 관찰이 늦어져도 3.5초 뒤에는 모두 보이게 한다 */
+    window.setTimeout(function () {
+      Array.prototype.forEach.call(targets, function (node) { node.classList.add("is-in"); });
+    }, 3500);
   }
 
   /* ---------- 홈: ABOUT ---------- */
@@ -411,4 +505,6 @@
   renderAbout();
   renderContact();
   renderDetail();
+  initPreviews();
+  initReveal();
 })();
