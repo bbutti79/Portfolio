@@ -52,7 +52,7 @@ window.SITE_DATA = {
       parts: [
         {
           heading: "방구석 파이터의 비밀 순찰대 (본편)",
-          video: { label: "본편", url: "" },
+          video: { label: "본편", url: "https://youtu.be/O1yg1X-ZAHg" },
           fields: [
             ["과제", "뮤직비디오 제작"],
             ["유형", "생성형 AI 애니메이션 뮤직비디오 (3D 스타일)"],
