@@ -244,8 +244,8 @@ ul { padding: 0; list-style: none; }
 
 /* 티커 */
 .ticker { background: var(--stage); color: var(--stage-ink); overflow: hidden; white-space: nowrap; border-bottom: 1px solid var(--stage-line); padding: 14px 0; }
-.ticker-track { display: inline-flex; animation: ticker 36s linear infinite; }
-.ticker-track span { font-family: var(--display); font-weight: 800; font-size: 0.9rem; letter-spacing: 0.22em; }
+.ticker-track { display: inline-flex; animation: ticker 80s linear infinite; }
+.ticker-track span { font-family: var(--display); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.14em; opacity: 0.55; }
 @keyframes ticker { to { transform: translateX(-50%); } }
 .ticker:hover .ticker-track { animation-play-state: paused; }
 
