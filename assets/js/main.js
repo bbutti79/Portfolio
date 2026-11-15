@@ -178,16 +178,19 @@
 
         var thumbs = make("div", "featured-thumbs");
         (work.thumbs || []).forEach(function (thumb) {
+          /* 태그는 이미지 위가 아니라 아래 캡션으로 둬서 장면이 가려지지 않게 한다 */
+          var cell = make("div", "thumb-item");
           var link = make("a", "thumb-link");
           link.href = workHref(work);
           link.setAttribute("aria-label", work.title + " — " + (thumb.tag || "영상"));
-          if (thumb.tag) { link.appendChild(make("span", "thumb-tag", thumb.tag)); }
           var img = make("img");
           img.src = thumb.src;
           img.alt = thumb.alt || "";
           img.loading = "lazy";
           link.appendChild(img);
-          thumbs.appendChild(link);
+          cell.appendChild(link);
+          if (thumb.tag) { cell.appendChild(make("p", "thumb-caption", thumb.tag)); }
+          thumbs.appendChild(cell);
         });
 
         card.appendChild(info);
