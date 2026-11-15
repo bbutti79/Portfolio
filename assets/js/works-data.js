@@ -67,7 +67,7 @@ window.SITE_DATA = {
         },
         {
           heading: "키네틱타이포 (모션 적용본)",
-          video: { label: "모션 타이포", url: "" },
+          video: { label: "모션 타이포", url: "https://youtu.be/-hy7MMrEQO4" },
           fields: [
             ["과제", "모션그래픽과 키네틱 타이포그래피"],
             ["유형", "키네틱 타이포그래피 영상"],
