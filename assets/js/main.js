@@ -147,6 +147,17 @@
       frame.appendChild(make("span", "video-pending", "영상 준비 중"));
     }
     block.appendChild(frame);
+    // 삽입 재생이 막히는 환경(파일로 직접 열기, 일부 앱 내 브라우저)에서도 볼 수 있도록 원본 링크를 함께 둔다.
+    // toEmbedUrl 을 통과한 https 유튜브/비메오 주소만 링크로 만든다.
+    if (embed) {
+      var host = new URL(video.url).hostname.replace(/^www\./, "");
+      var site = /vimeo\.com$/.test(host) ? "Vimeo" : "YouTube";
+      var open = make("a", "video-open", site + "에서 보기 ↗");
+      open.href = video.url;
+      open.target = "_blank";
+      open.rel = "noopener noreferrer";
+      block.appendChild(open);
+    }
     return block;
   }
 
@@ -499,7 +510,33 @@
     }
   }
 
+  /* 헤더 눈금자: 스크롤 진행도를 재생헤드 위치(--p)와 타임코드(30fps, 4px=1프레임)로 표시 */
+  function initPlayhead() {
+    var ruler = $(".ruler");
+    if (!ruler) { return; }
+    var tc = $(".ruler-tc", ruler);
+    var ticking = false;
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function update() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var y = Math.max(0, window.pageYOffset || 0);
+      var p = max > 0 ? Math.min(1, y / max) : 0;
+      ruler.style.setProperty("--p", p.toFixed(4));
+      if (tc) {
+        var frames = Math.round(y / 4);
+        tc.textContent = pad(Math.floor(frames / 108000)) + ":" + pad(Math.floor(frames / 1800) % 60) + ":" + pad(Math.floor(frames / 30) % 60) + ":" + pad(frames % 30);
+      }
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
   initNav();
+  initPlayhead();
   if ($("#works-grid")) { initScrollSpy(); }
   renderWorks();
   renderAbout();

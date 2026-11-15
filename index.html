@@ -37,6 +37,8 @@
         </ul>
       </nav>
     </div>
+    <!-- 편집 타임라인 눈금자: 스크롤 위치를 재생헤드와 타임코드로 보여줌(장식, 스크린리더에는 숨김) -->
+    <div class="ruler" aria-hidden="true"><span class="ruler-ticks"></span><span class="ruler-tc">00:00:00:00</span><span class="playhead"></span></div>
   </header>
 
   <main id="main">
@@ -55,21 +57,14 @@
         </div>
         <figure class="hero-visual">
           <img src="assets/img/hero.jpg" width="1200" height="900" alt="방구석 파이터의 비밀 순찰대의 한 장면: 카펫 위에 나란히 앉은 두 강아지">
+          <div class="player" aria-hidden="true"><span class="player-play"></span><span class="player-track"><i></i></span><span class="player-tc">00:00:00:00</span></div>
           <figcaption><span>KEY VISUAL</span><span class="bar" aria-hidden="true">|</span>Character Animation / Short Film</figcaption>
         </figure>
       </div>
     </section>
 
-    <!-- 장식 티커: 같은 키워드를 흘려 보냄(스크린리더에는 숨김) -->
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span>PLANNING · DIRECTING · EDITING · MOTION · AI PIPELINE · PLANNING · DIRECTING · EDITING · MOTION · AI PIPELINE · </span>
-        <span>PLANNING · DIRECTING · EDITING · MOTION · AI PIPELINE · PLANNING · DIRECTING · EDITING · MOTION · AI PIPELINE · </span>
-      </div>
-    </div>
-
-    <!-- 01 WORKS: 어두운 상영관(스크리닝) 구간 -->
-    <section id="works" class="section stage">
+    <!-- 01 WORKS: 호버하면 영상이 재생되는 타일 -->
+    <section id="works" class="section works-section">
       <div class="container">
         <header class="section-head">
           <h2 class="section-title"><span class="no">01</span><span class="bar" aria-hidden="true"></span>SELECTED WORKS</h2>
