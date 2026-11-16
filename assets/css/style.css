@@ -388,6 +388,11 @@ ul { padding: 0; list-style: none; }
   .process-grid { grid-template-columns: 1fr; }
   .step + .step::before { display: none; }
   .step + .step { border-top: 1px solid var(--hair); }
+  .step { display: flex; flex-direction: column; }
+  .step-no { order: 1; margin: 0 0 6px; }
+  .step h3 { order: 2; }
+  .step-text { order: 3; margin: 4px 0 16px; }
+  .step .doc { order: 4; }
   .player-tc { font-size: 0.64rem; }
   .works-section .featured-thumbs { grid-template-columns: 1fr; }
   .ruler-tc { right: 16px; }
