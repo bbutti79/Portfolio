@@ -162,6 +162,13 @@
   }
 
   /* ---------- 홈: WORKS (정지 이미지 타일, 호버하면 천천히 움직이는 효과는 CSS) ---------- */
+  function slateRow(label, value) {
+    var row = make("p", "slate-row");
+    row.appendChild(make("span", "slate-label", label));
+    row.appendChild(make("span", "slate-value", value));
+    return row;
+  }
+
   function buildTile(work, thumb, options) {
     var cell = make("article", "tile");
     var media = make("a", "tile-media");
@@ -192,7 +199,12 @@
     if (thumb.tag) { row.appendChild(make("p", "tile-tag", thumb.tag)); }
     meta.appendChild(row);
     if (options && options.numbered && work.short) { meta.appendChild(make("p", "tile-short", work.short)); }
-    if (thumb.slate) { meta.appendChild(make("p", "tile-slate", thumb.slate)); }
+    if (thumb.ai || thumb.tools) {
+      var slate = make("div", "tile-slate");
+      if (thumb.ai) { slate.appendChild(slateRow("AI", thumb.ai)); }
+      if (thumb.tools) { slate.appendChild(slateRow("TOOLS", thumb.tools)); }
+      meta.appendChild(slate);
+    }
     cell.appendChild(meta);
     return cell;
   }
@@ -234,20 +246,62 @@
         var item = make("li");
         var first = (work.thumbs || [])[0] || {};
         var merged = {
-          src: first.src, alt: first.alt, slate: first.slate,
+          src: first.src, alt: first.alt, ai: first.ai, tools: first.tools,
           tag: first.tag || work.tag
         };
         item.appendChild(buildTile(work, merged, { numbered: true }));
         grid.appendChild(item);
       }
     });
+    grid.appendChild(buildGuideTile());
+  }
+
+  /* 작품 카드 옆 안내 카드: PROCESS(기획서·스토리보드 PDF)로 이동 */
+  function buildGuideTile() {
+    var item = make("li");
+    var cell = make("article", "tile tile-guide");
+    var media = make("a", "tile-media");
+    media.href = "#process";
+    media.setAttribute("aria-label", "제작 문서 보기 — PROCESS 섹션으로 이동");
+    /* 반반 구성: 왼쪽 기획서, 오른쪽 스토리보드 (실제 문서 첫 장 이미지) */
+    var split = make("div", "guide-split");
+    [["guide-plan.jpg", "기획서"], ["guide-board.jpg", "스토리보드"]].forEach(function (pair) {
+      var half = make("div", "guide-half");
+      var pic = make("img", "");
+      pic.src = "assets/img/" + pair[0];
+      pic.alt = "";
+      pic.loading = "lazy";
+      half.appendChild(pic);
+      half.appendChild(make("span", "guide-label", pair[1]));
+      split.appendChild(half);
+    });
+    media.appendChild(split);
+    cell.appendChild(media);
+
+    var meta = make("div", "tile-meta");
+    var title = make("h3", "tile-title");
+    title.appendChild(make("span", "no", "PDF"));
+    var bar = make("span", "bar");
+    bar.setAttribute("aria-hidden", "true");
+    title.appendChild(bar);
+    var link = make("a", "", "제작 문서");
+    link.href = "#process";
+    title.appendChild(link);
+    meta.appendChild(title);
+    var row = make("div", "tile-row");
+    row.appendChild(make("p", "tile-tag", "PROCESS"));
+    meta.appendChild(row);
+    meta.appendChild(make("p", "tile-short", "기획서 · 스토리보드 — 작품 상세에서 PDF 공개"));
+    cell.appendChild(meta);
+    item.appendChild(cell);
+    return item;
   }
 
   /* 스크롤 등장: 요소가 화면에 들어오면 아래에서 올라오며 나타난다(움직임 줄이기 설정이면 건너뜀) */
   function initReveal() {
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce || !("IntersectionObserver" in window)) { return; }
-    var targets = document.querySelectorAll(".section-head, .featured, .tile, .about-top, .strength, .tools, .contact-email, .contact-actions");
+    var targets = document.querySelectorAll(".section-head, .featured, .tile, .about-top, .flow, .tools, .contact-email, .contact-actions");
     if (!targets.length) { return; }
     document.documentElement.classList.add("reveal-on");
     var observer = new IntersectionObserver(function (entries) {
@@ -295,15 +349,18 @@
     top.appendChild(career);
     box.appendChild(top);
 
-    var strengths = make("ul", "strengths");
-    (about.strengths || []).forEach(function (item, index) {
-      var li = make("li", "strength");
-      li.appendChild(make("span", "strength-no", String(index + 1).padStart(2, "0")));
-      li.appendChild(make("h3", "strength-title", item.title));
-      li.appendChild(make("p", "strength-proof", item.proof));
-      strengths.appendChild(li);
+    var flowBox = make("div", "flow");
+    flowBox.appendChild(make("h3", "mini-title", "PRODUCTION FLOW"));
+    var steps = make("ol", "flow-list");
+    (about.flow || []).forEach(function (item, index) {
+      var li = make("li", "flow-step");
+      li.appendChild(make("span", "flow-no", String(index + 1).padStart(2, "0")));
+      li.appendChild(make("h4", "flow-name", item.name));
+      li.appendChild(make("p", "flow-text", item.text));
+      steps.appendChild(li);
     });
-    box.appendChild(strengths);
+    flowBox.appendChild(steps);
+    box.appendChild(flowBox);
 
     var tools = make("div", "tools");
     tools.appendChild(make("h3", "mini-title", "TOOLS"));
@@ -372,6 +429,25 @@
   }
 
   /* ---------- 작품 상세 ---------- */
+  /* 제작 문서 목록: assets/docs 안의 PDF 또는 https 링크만 허용. 유효한 항목이 없으면 null */
+  function docList(docs) {
+    var safe = (docs || []).filter(function (doc) {
+      return doc && /^(assets\/docs\/[A-Za-z0-9_.\-]+\.pdf|https:\/\/)/.test(doc.href || "");
+    });
+    if (!safe.length) { return null; }
+    var list = make("ul", "doc-list");
+    safe.forEach(function (doc) {
+      var li = make("li");
+      var link = make("a", "doc-link", doc.label + " (PDF)");
+      link.href = doc.href;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      li.appendChild(link);
+      list.appendChild(li);
+    });
+    return list;
+  }
+
   function renderDetail() {
     var article = $("#work-detail");
     if (!article) { return; }
@@ -405,6 +481,13 @@
         if (part.heading) { section.appendChild(make("h2", "part-title", part.heading)); }
         if (part.video) { section.appendChild(videoBlock(part.video, work, index)); }
         section.appendChild(fieldList(part.fields));
+        var partDocs = docList(part.docs);
+        if (partDocs) {
+          var partDocBox = make("div", "part-docs");
+          partDocBox.appendChild(make("h3", "part-docs-title", "제작 문서"));
+          partDocBox.appendChild(partDocs);
+          section.appendChild(partDocBox);
+        }
         parts.appendChild(section);
       });
     }
@@ -418,23 +501,11 @@
     }
 
     var docs = $("#wd-docs");
-    var safeDocs = (work.docs || []).filter(function (doc) {
-      return doc && /^(assets\/docs\/[A-Za-z0-9_.\-]+\.pdf|https:\/\/)/.test(doc.href || "");
-    });
-    if (docs && safeDocs.length) {
+    var workDocs = docList(work.docs);
+    if (docs && workDocs) {
       docs.textContent = "";
       docs.appendChild(make("h2", "part-title", "제작 문서"));
-      var list = make("ul", "doc-list");
-      safeDocs.forEach(function (doc) {
-        var li = make("li");
-        var link = make("a", "doc-link", doc.label + " (PDF)");
-        link.href = doc.href;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        li.appendChild(link);
-        list.appendChild(li);
-      });
-      docs.appendChild(list);
+      docs.appendChild(workDocs);
       docs.hidden = false;
     }
   }

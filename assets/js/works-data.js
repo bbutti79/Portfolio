@@ -24,10 +24,12 @@ window.SITE_DATA = {
       { year: "2005 – 2018", text: "온라인 게임·서비스 기획 (NHN · 엠게임 · YDOnline · 네오싸이언 · 넷마블)" },
       { year: "2018 – 2022", text: "편의점 운영 (점주)" }
     ],
-    strengths: [
-      { title: "기획 · 프로덕션 관리", proof: "기획서 · 스토리보드 · 제작 현황판 — 작품별 문서 3종" },
-      { title: "AI 영상 워크플로우", proof: "5개 영상 전편 AI 활용 · 도구 9종 · 작품별 활용 공정 표기" },
-      { title: "후반 : 편집 · 사운드 · 색보정", proof: "Premiere Pro · After Effects" }
+    flow: [
+      { name: "기획", text: "기획서 · 콘셉트 · 시놉시스" },
+      { name: "설계", text: "스토리보드 · 사운드 설계 · 비주얼 설계" },
+      { name: "소스 제작", text: "AI 영상·이미지 생성 · 음악 · 스톡 소스" },
+      { name: "편집", text: "Premiere Pro · 컷 편집 · 조립" },
+      { name: "후반", text: "After Effects 모션·합성 · 사운드 믹싱 · 자막 · 색보정" }
     ],
     toolGroups: [
       { label: "영상 · 모션", items: ["Premiere Pro", "After Effects"] },
@@ -46,13 +48,14 @@ window.SITE_DATA = {
       subtitle: "MV + Kinetic Typography",
       short: "두 강아지의 비밀 순찰, 뮤직비디오와 타이포 모션",
       thumbs: [
-        { src: "assets/img/work-1a.jpg", tag: "MUSIC VIDEO", slate: "TOOLS : Seedance · Google Flow · Runway · Suno", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" },
-        { src: "assets/img/work-1b.jpg", tag: "KINETIC TYPOGRAPHY", slate: "TOOLS : Seedance · Higgsfield · After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }
+        { src: "assets/img/work-1a.jpg", tag: "MUSIC VIDEO", ai: "Seedance · Google Flow · Runway · Suno", tools: "After Effects · Premiere Pro", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" },
+        { src: "assets/img/work-1b.jpg", tag: "KINETIC TYPOGRAPHY", ai: "Seedance · Higgsfield", tools: "After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }
       ],
       parts: [
         {
           heading: "방구석 파이터의 비밀 순찰대 (본편)",
           video: { label: "본편", url: "https://youtu.be/O1yg1X-ZAHg" },
+          docs: [{ label: "기획서", href: "assets/docs/work-1-plan.pdf" }, { label: "사운드 기획서", href: "assets/docs/work-1-sound.pdf" }, { label: "스토리보드", href: "assets/docs/work-1-storyboard.pdf" }, { label: "비주얼 기획서", href: "assets/docs/work-1-visual.pdf" }],
           fields: [
             ["과제", "뮤직비디오 제작"],
             ["유형", "생성형 AI 애니메이션 뮤직비디오 (3D 스타일)"],
@@ -68,6 +71,7 @@ window.SITE_DATA = {
         {
           heading: "키네틱타이포 (모션 적용본)",
           video: { label: "모션 타이포", url: "https://youtu.be/-hy7MMrEQO4" },
+          docs: [{ label: "기획서", href: "assets/docs/work-1-kinetic-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-1-kinetic-storyboard.pdf" }],
           fields: [
             ["과제", "모션그래픽과 키네틱 타이포그래피"],
             ["유형", "키네틱 타이포그래피 영상"],
@@ -94,7 +98,7 @@ window.SITE_DATA = {
       title: "크아아앙: 전설의 시작",
       tag: "AD FILM",
       short: "던전 보스 드래곤의 출근과 퇴근",
-      thumbs: [{ src: "assets/img/work-2.jpg", slate: "TOOLS : Google Flow · Suno · Pixabay", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
+      thumbs: [{ src: "assets/img/work-2.jpg", ai: "Google Flow · Suno", tools: "Premiere Pro", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/gJrfZl6HIhc" },
@@ -112,7 +116,7 @@ window.SITE_DATA = {
           ]
         }
       ],
-      docs: []
+      docs: [{ label: "기획서", href: "assets/docs/work-2-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-2-storyboard.pdf" }]
     },
     {
       id: "work-3",
@@ -120,7 +124,7 @@ window.SITE_DATA = {
       title: "Normal Weekend",
       tag: "EDITING & SOUND",
       short: "평온한 주말 × 10000% 과장 사운드",
-      thumbs: [{ src: "assets/img/work-3.jpg", slate: "TOOLS : Google Flow · Suno · Pixabay", alt: "Normal Weekend 대표 장면: 설거지 스펀지 클로즈업" }],
+      thumbs: [{ src: "assets/img/work-3.jpg", ai: "Google Flow · Suno", tools: "Premiere Pro", alt: "Normal Weekend 대표 장면: 설거지 스펀지 클로즈업" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/5ol06Ry-PKA" },
@@ -137,7 +141,7 @@ window.SITE_DATA = {
           ]
         }
       ],
-      docs: []
+      docs: [{ label: "기획서", href: "assets/docs/work-3-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-3-storyboard.pdf" }]
     },
     {
       id: "work-4",
@@ -145,12 +149,12 @@ window.SITE_DATA = {
       title: "마음의 장마",
       tag: "CAMPAIGN FILM",
       short: "고립은 장마로, 관심은 노란 우산으로",
-      thumbs: [{ src: "assets/img/work-4.jpg", slate: "TOOLS : Google Flow · Midjourney · Suno", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
+      thumbs: [{ src: "assets/img/work-4.jpg", ai: "Google Flow · Midjourney · Suno", tools: "Premiere Pro · After Effects", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/4BU09Yfcsy4" },
           fields: [
-            ["과제", "공모전 주제에 맞는 영상 제작"],
+            ["과제", "캠페인 주제에 맞는 영상 제작"],
             ["주제", "자살예방 공익 캠페인"],
             ["유형", "공익 애니메이션 (3D 피규어 스타일)"],
             ["길이", "약 1분 35초"],
@@ -163,7 +167,7 @@ window.SITE_DATA = {
           ]
         }
       ],
-      docs: []
+      docs: [{ label: "기획서", href: "assets/docs/work-4-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-4-storyboard.pdf" }]
     }
   ]
 };
