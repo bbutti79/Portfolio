@@ -44,7 +44,7 @@
       </nav>
     </div>
     <!-- 편집 타임라인 눈금자: 스크롤 위치를 재생헤드와 타임코드로 보여줌(장식, 스크린리더에는 숨김) -->
-    <div class="ruler" aria-hidden="true"><span class="ruler-ticks"></span><span class="ruler-tc">00:00:00:00</span><span class="playhead"></span></div>
+    <div class="ruler" aria-hidden="true"><span class="ruler-ticks"></span><span class="playhead"></span></div>
   </header>
 
   <main id="main">
@@ -93,7 +93,7 @@
     <section id="works" class="section works-section">
       <div class="container">
         <header class="section-head">
-          <h2 class="section-title"><span class="no">01</span><span class="bar" aria-hidden="true"></span>SELECTED WORKS</h2>
+          <h2 class="section-title"><span class="no">01</span><span class="name">SELECTED WORKS</span></h2>
           <p class="section-meta">4 PROJECTS / 5 FILMS</p>
         </header>
         <div id="works-featured"></div>
@@ -102,49 +102,17 @@
       </div>
     </section>
 
-    <!-- 02 PROCESS: 완성 영상 뒤의 설계도. 문서 목업은 장식이며, 실제 기획서·스토리보드 PDF는 works-data.js 의 docs 로 상세 페이지에 연결 -->
-    <section id="process" class="section section-line">
+    <!-- 02 PROCESS: 대표 비주얼 1장(AI로 만든 디자인 시안). 이미지 안에 섹션 제목·문구·버튼이 들어 있어 제목은 화면 낭독용으로만 둔다. 버튼 위치에 투명 링크를 얹어 MV 상세 페이지로 연결 -->
+    <section id="process" class="section process-section">
       <div class="container">
-        <header class="section-head">
-          <h2 class="section-title"><span class="no">02</span><span class="bar" aria-hidden="true"></span>PROCESS</h2>
-          <p class="section-meta">기획서 · 사운드 · 스토리보드 · 비주얼</p>
-        </header>
-        <p class="process-lead">완성 영상 뒤의 설계도</p>
-        <p class="process-note">방구석 파이터 제작 순서 — 음악이 먼저, 컷은 곡 구조에 맞춰</p>
-        <ol class="process-grid">
-          <li class="step">
-            <a class="doc doc-real" href="assets/docs/work-1-plan.pdf" target="_blank" rel="noopener noreferrer" aria-label="방구석 파이터의 비밀 순찰대 기획서 PDF 열기">
-              <img src="assets/img/process-plan.jpg" alt="방구석 파이터의 비밀 순찰대 기획서 2쪽" width="800" height="600" loading="lazy">
-            </a>
-            <p class="step-no">STEP 01</p>
-            <h3>기획서</h3>
-            <p class="step-text">콘셉트 · 시놉시스 · 구성</p>
-          </li>
-          <li class="step">
-            <a class="doc doc-real" href="assets/docs/work-1-sound.pdf" target="_blank" rel="noopener noreferrer" aria-label="방구석 파이터의 비밀 순찰대 사운드 기획서 PDF 열기">
-              <img src="assets/img/process-sound.jpg" alt="방구석 파이터의 비밀 순찰대 사운드 기획서 2쪽" width="800" height="600" loading="lazy">
-            </a>
-            <p class="step-no">STEP 02</p>
-            <h3>사운드 설계</h3>
-            <p class="step-text">140 BPM · 곡 구조 · 가사 싱크</p>
-          </li>
-          <li class="step">
-            <a class="doc doc-real" href="assets/docs/work-1-storyboard.pdf" target="_blank" rel="noopener noreferrer" aria-label="방구석 파이터의 비밀 순찰대 스토리보드 PDF 열기">
-              <img src="assets/img/process-storyboard.jpg" alt="방구석 파이터의 비밀 순찰대 스토리보드 첫 페이지" width="800" height="600" loading="lazy">
-            </a>
-            <p class="step-no">STEP 03</p>
-            <h3>스토리보드</h3>
-            <p class="step-text">컷 구성 · 샷 설계</p>
-          </li>
-          <li class="step">
-            <a class="doc doc-real" href="assets/docs/work-1-visual.pdf" target="_blank" rel="noopener noreferrer" aria-label="방구석 파이터의 비밀 순찰대 비주얼 기획서 PDF 열기">
-              <img src="assets/img/process-visual.jpg" alt="방구석 파이터의 비밀 순찰대 비주얼 기획서 2쪽" width="800" height="600" loading="lazy">
-            </a>
-            <p class="step-no">STEP 04</p>
-            <h3>비주얼 설계</h3>
-            <p class="step-text">룩 · POV 카메라 규칙 · 캐릭터</p>
-          </li>
-        </ol>
+        <h2 class="sr-only">02 PROCESS — 아이디어가 영상이 되기까지</h2>
+        <figure class="process-visual">
+          <picture>
+            <source media="(max-width: 700px)" srcset="assets/img/process-m.jpg" width="564" height="833">
+            <img src="assets/img/process-pc.jpg" alt="PROCESS 대표 비주얼(디자인 시안): 아이디어가 영상이 되기까지, 기획·스토리보드·편집·최종 영상의 4단계" width="1144" height="434" loading="lazy">
+          </picture>
+          <a class="process-cta" href="work.html?id=work-1#mv" aria-label="제작 과정 보기: 방구석 파이터의 비밀 순찰대 상세 페이지로 이동"></a>
+        </figure>
       </div>
     </section>
 
@@ -152,7 +120,7 @@
     <section id="about" class="section section-line">
       <div class="container">
         <header class="section-head">
-          <h2 class="section-title"><span class="no">03</span><span class="bar" aria-hidden="true"></span>ABOUT</h2>
+          <h2 class="section-title"><span class="no">03</span><span class="name">ABOUT</span></h2>
           <p class="section-meta" id="about-name"></p>
         </header>
         <div id="about-body"></div>
@@ -163,7 +131,7 @@
     <section id="contact" class="section section-line">
       <div class="container">
         <header class="section-head">
-          <h2 class="section-title"><span class="no">04</span><span class="bar" aria-hidden="true"></span>CONTACT</h2>
+          <h2 class="section-title"><span class="no">04</span><span class="name">CONTACT</span></h2>
         </header>
         <p class="contact-big">함께 만들 영상, <em>기획부터</em>.</p>
         <p class="contact-sub">채용 제안 · 협업 문의</p>

@@ -3,7 +3,7 @@
    - 문구는 서술형 종결(~합니다 등)을 쓰지 않고 명사구·키워드·"라벨 : 값" 형식으로 씁니다.
    - videos[].url : https 유튜브/비메오 주소. 비워 두면 "영상 준비 중"이 표시됩니다.
    - docs : 제작 문서 PDF 목록. 비어 있으면 '제작 문서' 영역이 보이지 않습니다.
-     예) docs: [{ label: "기획서", href: "assets/docs/work-2-plan.pdf" }]
+     예) docs: [{ label: "스토리보드", href: "assets/docs/work-2-storyboard.pdf" }]
    - 공개 저장소이므로 전화번호·상세 주소·생년월일 등 개인정보는 넣지 않습니다.
    ========================================================== */
 window.SITE_DATA = {
@@ -48,6 +48,8 @@ window.SITE_DATA = {
         {
           heading: "방구석 파이터의 비밀 순찰대 (본편)",
           video: { label: "본편", url: "https://youtu.be/O1yg1X-ZAHg" },
+          anchor: "mv",
+          cardShort: "잠든 주인을 지키는 두 강아지의 비밀 순찰 · 약 3분",
           docs: [{ label: "기획서", href: "assets/docs/work-1-plan.pdf" }, { label: "사운드 기획서", href: "assets/docs/work-1-sound.pdf" }, { label: "스토리보드", href: "assets/docs/work-1-storyboard.pdf" }, { label: "비주얼 기획서", href: "assets/docs/work-1-visual.pdf" }],
           fields: [
             ["과제", "뮤직비디오 제작"],
@@ -64,7 +66,10 @@ window.SITE_DATA = {
         {
           heading: "키네틱타이포 (모션 적용본)",
           video: { label: "모션 타이포", url: "https://youtu.be/-hy7MMrEQO4" },
-          docs: [{ label: "기획서", href: "assets/docs/work-1-kinetic-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-1-kinetic-storyboard.pdf" }],
+          anchor: "kinetic",
+          cardTitle: "키네틱타이포",
+          cardShort: "같은 노래를 가사 타이포 모션으로 다시 만든 버전 · 약 35초",
+          docs: [{ label: "스토리보드", href: "assets/docs/work-1-kinetic-storyboard.pdf" }],
           fields: [
             ["과제", "모션그래픽과 키네틱 타이포그래피"],
             ["유형", "키네틱 타이포그래피 영상"],
@@ -109,7 +114,7 @@ window.SITE_DATA = {
           ]
         }
       ],
-      docs: [{ label: "기획서", href: "assets/docs/work-2-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-2-storyboard.pdf" }]
+      docs: [{ label: "스토리보드", href: "assets/docs/work-2-storyboard.pdf" }]
     },
     {
       id: "work-3",
@@ -134,7 +139,7 @@ window.SITE_DATA = {
           ]
         }
       ],
-      docs: [{ label: "기획서", href: "assets/docs/work-3-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-3-storyboard.pdf" }]
+      docs: [{ label: "스토리보드", href: "assets/docs/work-3-storyboard.pdf" }]
     },
     {
       id: "work-4",
@@ -160,7 +165,7 @@ window.SITE_DATA = {
           ]
         }
       ],
-      docs: [{ label: "기획서", href: "assets/docs/work-4-plan.pdf" }, { label: "스토리보드", href: "assets/docs/work-4-storyboard.pdf" }]
+      docs: [{ label: "스토리보드", href: "assets/docs/work-4-storyboard.pdf" }]
     }
   ]
 };

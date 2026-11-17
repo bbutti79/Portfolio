@@ -169,11 +169,34 @@
     return row;
   }
 
-  function buildTile(work, thumb, options) {
+  /* 영상 한 편을 카드로 표현하는 객체: {no, title, short, href, thumb} */
+  function buildFilms() {
+    var films = [];
+    (data.works || []).forEach(function (work) {
+      (work.parts || []).forEach(function (part, index) {
+        if (!part || !part.video) { return; }
+        var thumb = (work.thumbs || [])[index] || (work.thumbs || [])[0] || {};
+        films.push({
+          no: String(films.length + 1).padStart(2, "0"),
+          title: part.cardTitle || work.title,
+          short: part.cardShort || work.short,
+          href: workHref(work) + (part.anchor ? "#" + part.anchor : ""),
+          thumb: {
+            src: thumb.src, alt: thumb.alt, ai: thumb.ai, tools: thumb.tools,
+            tag: thumb.tag || work.tag
+          }
+        });
+      });
+    });
+    return films;
+  }
+
+  function buildTile(film, options) {
+    var thumb = film.thumb || {};
     var cell = make("article", "tile");
     var media = make("a", "tile-media");
-    media.href = workHref(work);
-    media.setAttribute("aria-label", work.title + " — " + (thumb.tag || "영상"));
+    media.href = film.href;
+    media.setAttribute("aria-label", film.title + " — " + (thumb.tag || "영상"));
 
     var img = make("img", "tile-poster");
     img.src = thumb.src;
@@ -185,20 +208,28 @@
 
     var meta = make("div", "tile-meta");
     if (options && options.numbered) {
+      var head = make("div", "tile-head");
       var title = make("h3", "tile-title");
-      title.appendChild(make("span", "no", work.no));
+      title.appendChild(make("span", "no", film.no));
       var bar = make("span", "bar");
       bar.setAttribute("aria-hidden", "true");
       title.appendChild(bar);
-      var titleLink = make("a", "", work.title);
-      titleLink.href = workHref(work);
+      var titleLink = make("a", "", film.title);
+      titleLink.href = film.href;
       title.appendChild(titleLink);
-      meta.appendChild(title);
+      head.appendChild(title);
+      /* 영상 위가 아니라 제목 옆에 "다음 페이지가 있다"는 표시를 둔다(제목 링크와 같은 곳으로 가므로 보조기기에는 숨김) */
+      var more = make("a", "tile-more", "VIEW PROJECT →");
+      more.href = film.href;
+      more.setAttribute("aria-hidden", "true");
+      more.tabIndex = -1;
+      head.appendChild(more);
+      meta.appendChild(head);
     }
     var row = make("div", "tile-row");
     if (thumb.tag) { row.appendChild(make("p", "tile-tag", thumb.tag)); }
     meta.appendChild(row);
-    if (options && options.numbered && work.short) { meta.appendChild(make("p", "tile-short", work.short)); }
+    if (options && options.numbered && film.short) { meta.appendChild(make("p", "tile-short", film.short)); }
     if (thumb.ai || thumb.tools) {
       var slate = make("div", "tile-slate");
       if (thumb.ai) { slate.appendChild(slateRow("AI", thumb.ai)); }
@@ -209,6 +240,7 @@
     return cell;
   }
 
+  /* WORKS: 01 대표작(전폭) → 02·03 → 04·05 (모바일은 01~05 한 열) */
   function renderWorks() {
     var featuredBox = $("#works-featured");
     var grid = $("#works-grid");
@@ -216,88 +248,37 @@
     featuredBox.textContent = "";
     grid.textContent = "";
 
-    data.works.forEach(function (work) {
-      if (work.featured) {
+    buildFilms().forEach(function (film, index) {
+      if (index === 0) {
         var card = make("article", "featured");
         var info = make("div", "featured-info");
         info.appendChild(make("p", "label", "FEATURED"));
         var title = make("h3", "featured-title");
-        var titleLink = make("a", "", work.title);
-        titleLink.href = workHref(work);
+        var titleLink = make("a", "", film.title);
+        titleLink.href = film.href;
         title.appendChild(titleLink);
         info.appendChild(title);
-        if (work.subtitle) { info.appendChild(make("p", "featured-sub", work.subtitle)); }
-        info.appendChild(make("p", "featured-short", work.short));
+        info.appendChild(make("p", "featured-short", film.short));
         var more = make("a", "link-arrow", "VIEW PROJECT ");
-        more.href = workHref(work);
+        more.href = film.href;
         more.appendChild(make("span", "", "→"));
         more.lastChild.setAttribute("aria-hidden", "true");
         info.appendChild(more);
 
-        var thumbs = make("div", "featured-thumbs");
-        (work.thumbs || []).forEach(function (thumb) {
-          thumbs.appendChild(buildTile(work, thumb, {}));
-        });
+        var media = make("div", "featured-media");
+        media.appendChild(buildTile(film, {}));
 
         card.appendChild(info);
-        card.appendChild(thumbs);
+        card.appendChild(media);
         featuredBox.appendChild(card);
       } else {
         var item = make("li");
-        var first = (work.thumbs || [])[0] || {};
-        var merged = {
-          src: first.src, alt: first.alt, ai: first.ai, tools: first.tools,
-          tag: first.tag || work.tag
-        };
-        item.appendChild(buildTile(work, merged, { numbered: true }));
+        item.appendChild(buildTile(film, { numbered: true }));
         grid.appendChild(item);
       }
     });
-    grid.appendChild(buildGuideTile());
   }
 
-  /* 작품 카드 옆 안내 카드: PROCESS(기획서·스토리보드 PDF)로 이동 */
-  function buildGuideTile() {
-    var item = make("li");
-    var cell = make("article", "tile tile-guide");
-    var media = make("a", "tile-media");
-    media.href = "#process";
-    media.setAttribute("aria-label", "제작 문서 보기 — PROCESS 섹션으로 이동");
-    /* 반반 구성: 왼쪽 기획서, 오른쪽 스토리보드 (실제 문서 첫 장 이미지) */
-    var split = make("div", "guide-split");
-    [["guide-plan.jpg", "기획서"], ["guide-board.jpg", "스토리보드"]].forEach(function (pair) {
-      var half = make("div", "guide-half");
-      var pic = make("img", "");
-      pic.src = "assets/img/" + pair[0];
-      pic.alt = "";
-      pic.loading = "lazy";
-      half.appendChild(pic);
-      half.appendChild(make("span", "guide-label", pair[1]));
-      split.appendChild(half);
-    });
-    media.appendChild(split);
-    cell.appendChild(media);
-
-    var meta = make("div", "tile-meta");
-    var title = make("h3", "tile-title");
-    title.appendChild(make("span", "no", "PDF"));
-    var bar = make("span", "bar");
-    bar.setAttribute("aria-hidden", "true");
-    title.appendChild(bar);
-    var link = make("a", "", "제작 문서");
-    link.href = "#process";
-    title.appendChild(link);
-    meta.appendChild(title);
-    var row = make("div", "tile-row");
-    row.appendChild(make("p", "tile-tag", "PROCESS"));
-    meta.appendChild(row);
-    meta.appendChild(make("p", "tile-short", "기획서 · 스토리보드 — 작품 상세에서 PDF 공개"));
-    cell.appendChild(meta);
-    item.appendChild(cell);
-    return item;
-  }
-
-  /* 스크롤 등장: 요소가 화면에 들어오면 아래에서 올라오며 나타난다(움직임 줄이기 설정이면 건너뜀) */
   function initReveal() {
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce || !("IntersectionObserver" in window)) { return; }
@@ -329,6 +310,15 @@
     if (!box) { return; }
     box.textContent = "";
 
+    var layout = make("div", "about-layout");
+    var fig = make("figure", "about-portrait");
+    var img = make("img");
+    img.src = "assets/img/about-portrait.jpg";
+    img.alt = "작업 소개용 캐리커처 일러스트(AI로 제작): 왼쪽은 스토리보드 스케치, 오른쪽은 편집 작업실";
+    img.width = 960; img.height = 1200; img.loading = "lazy";
+    fig.appendChild(img);
+    layout.appendChild(fig);
+    var main = make("div", "about-main");
     var top = make("div", "about-top");
     var lead = make("div", "about-lead");
     (about.headline || []).forEach(function (line, index) {
@@ -347,7 +337,9 @@
     });
     career.appendChild(list);
     top.appendChild(career);
-    box.appendChild(top);
+    main.appendChild(top);
+    layout.appendChild(main);
+    box.appendChild(layout);
 
     var tools = make("div", "tools");
     tools.appendChild(make("h3", "mini-title", "TOOLS"));
@@ -359,7 +351,7 @@
       row.appendChild(tags);
       tools.appendChild(row);
     });
-    box.appendChild(tools);
+    main.appendChild(tools);
   }
 
   /* ---------- 홈: CONTACT (이메일 복사 · 메일 보내기) ---------- */
@@ -465,6 +457,7 @@
       parts.textContent = "";
       (work.parts || []).forEach(function (part, index) {
         var section = make("section", "detail-part");
+        if (part.anchor) { section.id = part.anchor; }
         if (part.heading) { section.appendChild(make("h2", "part-title", part.heading)); }
         if (part.video) { section.appendChild(videoBlock(part.video, work, index)); }
         section.appendChild(fieldList(part.fields));
@@ -477,6 +470,16 @@
         }
         parts.appendChild(section);
       });
+    }
+
+    /* #mv · #kinetic 처럼 해시로 들어오면 해당 영상 구역으로 이동. 브라우저의 자체 해시 이동이 끝난 뒤(load 이후)에 즉시 이동한다 */
+    if (location.hash && location.hash.length > 1) {
+      var goAnchor = function () {
+        var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (target) { target.scrollIntoView({ behavior: "instant" }); }
+      };
+      if (document.readyState === "complete") { setTimeout(goAnchor, 150); }
+      else { window.addEventListener("load", function () { setTimeout(goAnchor, 150); }); }
     }
 
     var compare = $("#wd-compare");
@@ -497,32 +500,63 @@
     }
   }
 
-  /* 헤더 눈금자: 스크롤 진행도를 재생헤드 위치(--p)와 타임코드(30fps, 4px=1프레임)로 표시 */
+  /* 상단 눈금자: 스크롤 위치를 재생헤드로 보여주고, HOME·WORKS·ABOUT·CONTACT 챕터를 마커로 표시한다.
+     --p(스크롤 진행도)와 --vw(화면 폭)를 문서 전체에 공유해서, 섹션 제목 아래 눈금이 같은 가로 위치까지 채워진다. */
   function initPlayhead() {
     var ruler = $(".ruler");
     if (!ruler) { return; }
-    var tc = $(".ruler-tc", ruler);
+    var root = document.documentElement;
+    var chapters = [];
     var ticking = false;
-    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    var lastMax = -1;
+    var OFFSET = 90; /* 고정 헤더 높이만큼 */
+
+    ["home", "works", "about", "contact"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) { return; }
+      var navLink = $('.site-nav a[href="#' + id + '"]');
+      var noEl = $(".section-title .no", el);
+      var mark = make("a", "ruler-mark");
+      mark.href = "#" + id;
+      mark.tabIndex = -1;
+      mark.setAttribute("data-short", noEl ? noEl.textContent.trim() : "00");
+      mark.appendChild(make("span", "ruler-mark-label", navLink ? navLink.textContent.trim() : id.toUpperCase()));
+      ruler.appendChild(mark);
+      chapters.push({ el: el, mark: mark, top: 0 });
+    });
+
+    function layout(max) {
+      chapters.forEach(function (c) {
+        c.top = c.el.getBoundingClientRect().top + (window.pageYOffset || 0) - OFFSET;
+        var p = max > 0 ? Math.min(1, Math.max(0, c.top / max)) : 0;
+        c.mark.style.left = (p * 100).toFixed(3) + "%";
+        c.mark.classList.toggle("is-end", p > 0.9);
+      });
+    }
     function update() {
       ticking = false;
-      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var max = root.scrollHeight - window.innerHeight;
       var y = Math.max(0, window.pageYOffset || 0);
       var p = max > 0 ? Math.min(1, y / max) : 0;
+      root.style.setProperty("--vw", root.clientWidth + "px");
+      root.style.setProperty("--p", p.toFixed(4));
       ruler.style.setProperty("--p", p.toFixed(4));
-      if (tc) {
-        var frames = Math.round(y / 4);
-        tc.textContent = pad(Math.floor(frames / 108000)) + ":" + pad(Math.floor(frames / 1800) % 60) + ":" + pad(Math.floor(frames / 30) % 60) + ":" + pad(frames % 30);
+      if (chapters.length) {
+        if (max !== lastMax) { layout(max); lastMax = max; }
+        var current = chapters[0];
+        chapters.forEach(function (c) { if (c.top <= y + 1) { current = c; } });
+        if (p >= 0.995) { current = chapters[chapters.length - 1]; }
+        chapters.forEach(function (c) { c.mark.classList.toggle("is-current", c === current); });
       }
     }
     window.addEventListener("scroll", function () {
       if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
     }, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("resize", function () { lastMax = -1; update(); });
+    window.addEventListener("load", function () { lastMax = -1; update(); });
     update();
   }
 
-  /* 히어로 하이라이트 릴: 실제 영상(무음 루프) + 재생/일시정지, 진행 바 이동, 챕터 칩(data-start 초) */
   function initReel() {
     var reel = $("#reel");
     var video = $("#reel-video");
