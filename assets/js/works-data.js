@@ -24,13 +24,6 @@ window.SITE_DATA = {
       { year: "2005 – 2018", text: "온라인 게임·서비스 기획 (NHN · 엠게임 · YDOnline · 네오싸이언 · 넷마블)" },
       { year: "2018 – 2022", text: "편의점 운영 (점주)" }
     ],
-    flow: [
-      { name: "기획", text: "기획서 · 콘셉트 · 시놉시스" },
-      { name: "설계", text: "스토리보드 · 사운드 설계 · 비주얼 설계" },
-      { name: "소스 제작", text: "AI 영상·이미지 생성 · 음악 · 스톡 소스" },
-      { name: "편집", text: "Premiere Pro · 컷 편집 · 조립" },
-      { name: "후반", text: "After Effects 모션·합성 · 사운드 믹싱 · 자막 · 색보정" }
-    ],
     toolGroups: [
       { label: "영상 · 모션", items: ["Premiere Pro", "After Effects"] },
       { label: "그래픽 · 3D (강의 학습)", items: ["Photoshop", "Illustrator", "Cinema 4D"] },

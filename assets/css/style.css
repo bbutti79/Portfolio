@@ -135,22 +135,7 @@ ul { padding: 0; list-style: none; }
 .career-list li { display: grid; grid-template-columns: 136px 1fr; gap: 16px; padding: 12px 0; border-top: 1px solid var(--hair); }
 .career-list li:last-child { border-bottom: 1px solid var(--hair); }
 .career-list .yr { font-family: var(--mono); font-size: 0.875rem; font-weight: 500; color: var(--text-2); }
-.flow { margin-top: 56px; }
-.flow-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin: 16px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--hair-strong); }
-.flow-step { position: relative; padding: 20px 24px 8px 0; }
-.flow-step::before { content: ""; position: absolute; left: 0; top: -5px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent-text); }
-.flow-step:not(:last-child)::after { content: "→"; position: absolute; right: 12px; top: -13px; padding: 0 6px; background: var(--bg); color: var(--muted); font-family: var(--mono); line-height: 24px; }
-.flow-no { display: block; margin-top: 6px; font-family: var(--mono); font-size: 0.75rem; color: var(--accent-text); }
-.flow-name { margin: 6px 0 4px; font-size: 1.125rem; font-weight: 800; }
-.flow-text { margin: 0; color: var(--text-2); font-size: 0.9rem; line-height: 1.55; }
-@media (max-width: 900px) {
-  .flow-list { grid-template-columns: 1fr; border-top: 0; border-left: 1px solid var(--hair-strong); }
-  .flow-step { padding: 0 0 22px 20px; }
-  .flow-step::before { left: -5px; top: 6px; }
-  .flow-step:not(:last-child)::after { content: none; }
-  .flow-no { margin-top: 0; }
-}
-.tools { margin-top: 48px; }
+.tools { margin-top: 56px; }
 .tool-group { margin-bottom: 16px; }
 .tool-label { font-size: 0.85rem; font-weight: 600; color: var(--text-2); margin-bottom: 8px; }
 .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }

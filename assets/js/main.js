@@ -301,7 +301,7 @@
   function initReveal() {
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce || !("IntersectionObserver" in window)) { return; }
-    var targets = document.querySelectorAll(".section-head, .featured, .tile, .about-top, .flow, .tools, .contact-email, .contact-actions");
+    var targets = document.querySelectorAll(".section-head, .featured, .tile, .about-top, .tools, .contact-email, .contact-actions");
     if (!targets.length) { return; }
     document.documentElement.classList.add("reveal-on");
     var observer = new IntersectionObserver(function (entries) {
@@ -348,19 +348,6 @@
     career.appendChild(list);
     top.appendChild(career);
     box.appendChild(top);
-
-    var flowBox = make("div", "flow");
-    flowBox.appendChild(make("h3", "mini-title", "PRODUCTION FLOW"));
-    var steps = make("ol", "flow-list");
-    (about.flow || []).forEach(function (item, index) {
-      var li = make("li", "flow-step");
-      li.appendChild(make("span", "flow-no", String(index + 1).padStart(2, "0")));
-      li.appendChild(make("h4", "flow-name", item.name));
-      li.appendChild(make("p", "flow-text", item.text));
-      steps.appendChild(li);
-    });
-    flowBox.appendChild(steps);
-    box.appendChild(flowBox);
 
     var tools = make("div", "tools");
     tools.appendChild(make("h3", "mini-title", "TOOLS"));
