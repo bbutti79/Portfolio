@@ -35,22 +35,13 @@ window.SITE_DATA = {
     {
       id: "work-1",
       no: "01",
-      featured: true,
       title: "방구석 파이터의 비밀 순찰대",
-      detailTitle: "방구석 파이터의 비밀 순찰대 + 키네틱타이포",
-      subtitle: "MV + Kinetic Typography",
-      short: "두 강아지의 비밀 순찰, 뮤직비디오와 타이포 모션",
-      thumbs: [
-        { src: "assets/img/work-1a.jpg", tag: "MUSIC VIDEO", ai: "Seedance · Google Flow · Runway · Suno", tools: "After Effects · Premiere Pro", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" },
-        { src: "assets/img/work-1b.jpg", tag: "KINETIC TYPOGRAPHY", ai: "Seedance · Higgsfield", tools: "After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }
-      ],
+      tag: "MUSIC VIDEO",
+      short: "잠든 주인을 지키는 두 강아지의 비밀 순찰 · 약 3분",
+      thumbs: [{ src: "assets/img/work-1a.jpg", ai: "Seedance · Google Flow · Runway · Suno", tools: "After Effects · Premiere Pro", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" }],
       parts: [
         {
-          heading: "방구석 파이터의 비밀 순찰대 (본편)",
           video: { label: "본편", url: "https://youtu.be/O1yg1X-ZAHg" },
-          anchor: "mv",
-          cardShort: "잠든 주인을 지키는 두 강아지의 비밀 순찰 · 약 3분",
-          docs: [{ label: "기획서", href: "assets/docs/work-1-plan.pdf" }, { label: "사운드 기획서", href: "assets/docs/work-1-sound.pdf" }, { label: "스토리보드", href: "assets/docs/work-1-storyboard.pdf" }, { label: "비주얼 기획서", href: "assets/docs/work-1-visual.pdf" }],
           fields: [
             ["과제", "뮤직비디오 제작"],
             ["유형", "생성형 AI 애니메이션 뮤직비디오 (3D 스타일)"],
@@ -62,37 +53,49 @@ window.SITE_DATA = {
             ["후반작업", "After Effects, Premiere Pro"],
             ["제작 기간", "2026.09 – 11"]
           ]
-        },
+        }
+      ],
+      snapshot: {
+        label: "PROJECT SNAPSHOT",
+        title: "같은 집, 두 개의 시선",
+        sub: "사람에게는 평범한 일상, 강아지에게는 거대한 모험.",
+        pair: [
+          { src: "assets/img/mv-human-pov.webp", w: 1280, h: 720, tag: "HUMAN POV", text: "따뜻한 저녁 · 평범한 거실", alt: "사람 시점의 거실: 따뜻한 조명 아래 소파에 앉은 두 사람과 카펫 위의 두 강아지" },
+          { src: "assets/img/mv-dog-pov.webp", w: 1280, h: 720, tag: "DOG POV", text: "달빛 아래 · 작은 영웅들의 모험", alt: "강아지 시점의 거실: 달빛이 드는 밤, 낮은 시점에서 마주 선 두 강아지와 장난감" }
+        ],
+        making: { src: "assets/img/mv-premiere.webp", w: 1600, h: 755, tag: "CREATION / EDITING", text: "실제 Premiere Pro 작업 화면", alt: "Premiere Pro 작업 화면: 소스·프로그램 모니터와 타임라인, 방구석 파이터 MV 프로젝트" }
+      },
+      related: { id: "work-kinetic", heading: "같은 노래의 다른 버전", label: "키네틱타이포 보기" },
+      docs: [{ label: "기획서", href: "assets/docs/work-1-plan.pdf" }, { label: "사운드 기획서", href: "assets/docs/work-1-sound.pdf" }, { label: "스토리보드", href: "assets/docs/work-1-storyboard.pdf" }, { label: "비주얼 기획서", href: "assets/docs/work-1-visual.pdf" }]
+    },
+    {
+      id: "work-kinetic",
+      no: "02",
+      title: "키네틱타이포",
+      tag: "KINETIC TYPOGRAPHY",
+      short: "같은 노래를 가사 타이포 모션으로 다시 만든 버전 · 약 35초",
+      thumbs: [{ src: "assets/img/work-1b.jpg", ai: "Seedance · Higgsfield", tools: "After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }],
+      parts: [
         {
-          heading: "키네틱타이포 (모션 적용본)",
           video: { label: "모션 타이포", url: "https://youtu.be/-hy7MMrEQO4" },
-          anchor: "kinetic",
-          cardTitle: "키네틱타이포",
-          cardShort: "같은 노래를 가사 타이포 모션으로 다시 만든 버전 · 약 35초",
-          docs: [{ label: "스토리보드", href: "assets/docs/work-1-kinetic-storyboard.pdf" }],
           fields: [
             ["과제", "모션그래픽과 키네틱 타이포그래피"],
             ["유형", "키네틱 타이포그래피 영상"],
             ["길이", "약 35초"],
             ["콘셉트", "같은 노래, 가사 타이포 모션으로 다시 만든 버전"],
+            ["본편과의 차이", "본편은 이야기·연출 중심, 이 영상은 타이포그래피·모션그래픽 중심"],
             ["담당 역할", "타이포 · 모션그래픽"],
             ["AI · 소스", "Seedance, Higgsfield"],
             ["후반작업", "After Effects"]
           ]
         }
       ],
-      compare: {
-        heading: "두 영상의 차이",
-        fields: [
-          ["본편", "이야기 · 연출 중심"],
-          ["모션 타이포", "타이포그래피 · 모션그래픽 중심"]
-        ]
-      },
-      docs: []
+      related: { id: "work-1", heading: "원곡 뮤직비디오", label: "방구석 파이터의 비밀 순찰대 보기" },
+      docs: [{ label: "스토리보드", href: "assets/docs/work-1-kinetic-storyboard.pdf" }]
     },
     {
       id: "work-2",
-      no: "02",
+      no: "03",
       title: "크아아앙: 전설의 시작",
       tag: "AD FILM",
       short: "던전 보스 드래곤의 출근과 퇴근",
@@ -118,7 +121,7 @@ window.SITE_DATA = {
     },
     {
       id: "work-3",
-      no: "03",
+      no: "04",
       title: "Normal Weekend",
       tag: "EDITING & SOUND",
       short: "평온한 주말 × 10000% 과장 사운드",
@@ -143,7 +146,7 @@ window.SITE_DATA = {
     },
     {
       id: "work-4",
-      no: "04",
+      no: "05",
       title: "마음의 장마",
       tag: "CAMPAIGN FILM",
       short: "고립은 장마로, 관심은 노란 우산으로",

@@ -427,11 +427,41 @@
     return list;
   }
 
+  /* PROJECT SNAPSHOT: 이미지 2장 비교 + 작업 화면 1장. 문구는 모두 HTML 텍스트(이미지에 합성하지 않음) */
+  function snapFigure(item, className) {
+    var fig = make("figure", "snap-fig " + (className || ""));
+    var img = make("img");
+    img.src = item.src; img.alt = item.alt || ""; img.width = item.w; img.height = item.h; img.loading = "lazy";
+    fig.appendChild(img);
+    var cap = make("figcaption", "snap-cap");
+    cap.appendChild(make("span", "snap-tag", item.tag));
+    cap.appendChild(make("span", "snap-text", item.text));
+    fig.appendChild(cap);
+    return fig;
+  }
+
+  function snapshotBlock(snap) {
+    var box = make("section", "snapshot");
+    box.setAttribute("aria-label", snap.label || "PROJECT SNAPSHOT");
+    var head = make("header", "snap-head");
+    head.appendChild(make("p", "snap-label", snap.label));
+    head.appendChild(make("h2", "snap-title", snap.title));
+    head.appendChild(make("p", "snap-sub", snap.sub));
+    box.appendChild(head);
+    var pair = make("div", "snap-pair");
+    (snap.pair || []).forEach(function (item) { pair.appendChild(snapFigure(item)); });
+    box.appendChild(pair);
+    if (snap.making) { box.appendChild(snapFigure(snap.making, "snap-making")); }
+    return box;
+  }
+
   function renderDetail() {
     var article = $("#work-detail");
     if (!article) { return; }
 
     var id = new URLSearchParams(window.location.search).get("id");
+    /* 분리 전 주소(work-1#kinetic)로 들어온 경우 키네틱타이포 페이지로 보낸다 */
+    if (id === "work-1" && location.hash === "#kinetic") { location.replace("work.html?id=work-kinetic"); return; }
     var work = data.works.filter(function (entry) { return entry.id === id; })[0];
     var missing = $("#work-missing");
     var back = $(".detail-back");
@@ -460,6 +490,7 @@
         if (part.anchor) { section.id = part.anchor; }
         if (part.heading) { section.appendChild(make("h2", "part-title", part.heading)); }
         if (part.video) { section.appendChild(videoBlock(part.video, work, index)); }
+        if (index === 0 && work.snapshot) { section.appendChild(snapshotBlock(work.snapshot)); }
         section.appendChild(fieldList(part.fields));
         var partDocs = docList(part.docs);
         if (partDocs) {
@@ -483,10 +514,15 @@
     }
 
     var compare = $("#wd-compare");
-    if (compare && work.compare) {
+    var related = work.related && data.works.filter(function (entry) { return entry.id === work.related.id; })[0];
+    if (compare && related) {
       compare.textContent = "";
-      compare.appendChild(make("h2", "part-title", work.compare.heading));
-      compare.appendChild(fieldList(work.compare.fields));
+      compare.appendChild(make("h2", "part-title", work.related.heading));
+      var relatedLink = make("a", "link-arrow", work.related.label + " ");
+      relatedLink.href = workHref(related);
+      relatedLink.appendChild(make("span", "", "→"));
+      relatedLink.lastChild.setAttribute("aria-hidden", "true");
+      compare.appendChild(relatedLink);
       compare.hidden = false;
     }
 
