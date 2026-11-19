@@ -181,7 +181,7 @@ window.SITE_DATA = {
         src: "assets/img/dalcraig-18.webp",
         alt: "암석 위에 놓인 DALCRAIG 18 보틀과 광고 카피 BORN FROM STONE. REFINED BY OAK.",
         ai: "Seedance 2.5",
-        tools: "FFmpeg"
+        tools: "FFmpeg · Premiere Pro"
       }],
       parts: [{
         video: {
@@ -221,6 +221,8 @@ window.SITE_DATA = {
       wip: true,
       thumbs: [{
         src: "assets/img/motion-studies.webp",
+        ai: "작업 중",
+        tools: "작업 중",
         alt: "숲의 거대한 나무 문 너머로 사이버틱 공간이 보이는 전환 콘셉트"
       }]
     }

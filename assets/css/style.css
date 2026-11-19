@@ -342,7 +342,10 @@ ul { padding: 0; list-style: none; }
 .works-section .featured .tile { background: none; border: 0; padding: 0; border-radius: 0; }
 /* 구조: 대표작(영상 2개, 전폭) → 2열 → 마지막 홀수 작품은 전폭 와이드 */
 .works-section .works-grid { grid-template-columns: 1fr 1fr; gap: 48px 32px; margin-top: 48px; }
-.works-section .works-grid > li { min-width: 0; }
+.works-section .works-grid > li {
+  display: grid;
+  min-width: 0;
+}
 .works-section .works-grid .tile-title { font-size: 1.3rem; }
 .works-section .works-grid .tile-short { max-width: 48em; }
 
