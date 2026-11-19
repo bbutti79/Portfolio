@@ -217,12 +217,12 @@ window.SITE_DATA = {
     {
       title: "MOTION STUDIES",
       tag: "WIP · MOTION DESIGN",
-      short: "공간 전환 · 일러스트 애니메이션 · 모션 디자인 탐구",
+      short: "문을 열 때마다 달라지는 공간 · 전환 모션 실험",
       wip: true,
       thumbs: [{
         src: "assets/img/motion-studies.webp",
-        ai: "작업 중",
-        tools: "작업 중",
+        ai: "활용 예정",
+        tools: "After Effects · Premiere Pro (예정)",
         alt: "숲의 거대한 나무 문 너머로 사이버틱 공간이 보이는 전환 콘셉트"
       }]
     }
