@@ -125,19 +125,7 @@
     frame.setAttribute("role", "region");
     frame.setAttribute("aria-label", (video && video.label ? video.label + " " : "") + "영상");
 
-    if (video && video.src) {
-      frame.classList.add("video-frame-portrait");
-      var player = make("video", "video-native");
-      player.src = video.src;
-      player.controls = true;
-      player.preload = "metadata";
-      player.playsInline = true;
-      player.setAttribute("aria-label", work.title + " " + video.label);
-      player.textContent = "이 브라우저에서 영상을 재생할 수 없습니다.";
-      frame.appendChild(player);
-      block.appendChild(frame);
-      return block;
-    }
+    if (video && video.portrait) { frame.classList.add("video-frame-portrait"); }
 
     var embed = toEmbedUrl(video && video.url);
     if (embed) {

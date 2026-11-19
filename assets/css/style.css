@@ -437,13 +437,6 @@ ul { padding: 0; list-style: none; }
   aspect-ratio: 9 / 16;
 }
 
-.video-native {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 .project-visual figure {
   margin: 0;
 }

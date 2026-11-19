@@ -186,7 +186,8 @@ window.SITE_DATA = {
       parts: [{
         video: {
           label: "최종 광고",
-          src: "assets/video/dalcraig-18.mp4"
+          url: "https://youtube.com/shorts/Vh-_JTOiLp8?feature=share",
+          portrait: true
         },
         fields: [
           ["유형", "가상의 18년 숙성 하이랜드 싱글 몰트 위스키 브랜드 광고"],
