@@ -125,6 +125,20 @@
     frame.setAttribute("role", "region");
     frame.setAttribute("aria-label", (video && video.label ? video.label + " " : "") + "영상");
 
+    if (video && video.src) {
+      frame.classList.add("video-frame-portrait");
+      var player = make("video", "video-native");
+      player.src = video.src;
+      player.controls = true;
+      player.preload = "metadata";
+      player.playsInline = true;
+      player.setAttribute("aria-label", work.title + " " + video.label);
+      player.textContent = "이 브라우저에서 영상을 재생할 수 없습니다.";
+      frame.appendChild(player);
+      block.appendChild(frame);
+      return block;
+    }
+
     var embed = toEmbedUrl(video && video.url);
     if (embed) {
       var iframe = make("iframe");
@@ -173,14 +187,15 @@
   function buildFilms() {
     var films = [];
     (data.works || []).forEach(function (work) {
-      (work.parts || []).forEach(function (part, index) {
-        if (!part || !part.video) { return; }
+      var parts = work.wip ? [{}] : (work.parts || []);
+      parts.forEach(function (part, index) {
+        if (!part || (!part.video && !work.wip)) { return; }
         var thumb = (work.thumbs || [])[index] || (work.thumbs || [])[0] || {};
         films.push({
           no: String(films.length + 1).padStart(2, "0"),
           title: part.cardTitle || work.title,
           short: part.cardShort || work.short,
-          href: workHref(work) + (part.anchor ? "#" + part.anchor : ""),
+          href: work.wip ? null : workHref(work) + (part.anchor ? "#" + part.anchor : ""),
           thumb: {
             src: thumb.src, alt: thumb.alt, ai: thumb.ai, tools: thumb.tools,
             tag: thumb.tag || work.tag
@@ -194,9 +209,11 @@
   function buildTile(film, options) {
     var thumb = film.thumb || {};
     var cell = make("article", "tile");
-    var media = make("a", "tile-media");
-    media.href = film.href;
-    media.setAttribute("aria-label", film.title + " — " + (thumb.tag || "영상"));
+    var media = make(film.href ? "a" : "div", "tile-media");
+    if (film.href) {
+      media.href = film.href;
+      media.setAttribute("aria-label", film.title + " — " + (thumb.tag || "영상"));
+    }
 
     var img = make("img", "tile-poster");
     img.src = thumb.src;
@@ -214,16 +231,26 @@
       var bar = make("span", "bar");
       bar.setAttribute("aria-hidden", "true");
       title.appendChild(bar);
-      var titleLink = make("a", "", film.title);
-      titleLink.href = film.href;
-      title.appendChild(titleLink);
+      var titleText = make(film.href ? "a" : "span", "", film.title);
+      if (film.href) { titleText.href = film.href; }
+      title.appendChild(titleText);
       head.appendChild(title);
-      /* 영상 위가 아니라 제목 옆에 "다음 페이지가 있다"는 표시를 둔다(제목 링크와 같은 곳으로 가므로 보조기기에는 숨김) */
-      var more = make("a", "tile-more", "VIEW PROJECT →");
-      more.href = film.href;
-      more.setAttribute("aria-hidden", "true");
-      more.tabIndex = -1;
-      head.appendChild(more);
+
+      if (film.href) {
+        /* 제목 링크와 같은 곳으로 가므로 보조기기에는 숨김 */
+        var more = make("a", "tile-more", "VIEW PROJECT →");
+        more.href = film.href;
+        more.setAttribute("aria-hidden", "true");
+        more.tabIndex = -1;
+        head.appendChild(more);
+      } else {
+        var status = make("span", "tile-status");
+        var label = make("span", "", "WORK IN PROGRESS");
+        label.setAttribute("lang", "en");
+        status.appendChild(label);
+        status.appendChild(make("span", "sr-only", " — 제작 진행 중"));
+        head.appendChild(status);
+      }
       meta.appendChild(head);
     }
     var row = make("div", "tile-row");
@@ -240,7 +267,7 @@
     return cell;
   }
 
-  /* WORKS: 01 대표작(전폭) → 02·03 → 04·05 (모바일은 01~05 한 열) */
+  /* WORKS: 01 대표작(전폭) → 02·03 → 04·05 → 06·07 (모바일은 한 열) */
   function renderWorks() {
     var featuredBox = $("#works-featured");
     var grid = $("#works-grid");
@@ -462,7 +489,7 @@
     var id = new URLSearchParams(window.location.search).get("id");
     /* 분리 전 주소(work-1#kinetic)로 들어온 경우 키네틱타이포 페이지로 보낸다 */
     if (id === "work-1" && location.hash === "#kinetic") { location.replace("work.html?id=work-kinetic"); return; }
-    var work = data.works.filter(function (entry) { return entry.id === id; })[0];
+    var work = data.works.filter(function (entry) { return !entry.wip && entry.id === id; })[0];
     var missing = $("#work-missing");
     var back = $(".detail-back");
     var siteName = (data.site && data.site.name) || "LEE JUNHEE";
@@ -499,6 +526,19 @@
           partDocBox.appendChild(partDocs);
           section.appendChild(partDocBox);
         }
+        parts.appendChild(section);
+      });
+      (work.visuals || []).forEach(function (item) {
+        var section = make("section", "detail-block project-visual");
+        section.appendChild(make("h2", "part-title", item.heading));
+        var figure = make("figure");
+        var img = make("img");
+        img.src = item.src;
+        img.alt = item.alt;
+        img.loading = "lazy";
+        figure.appendChild(img);
+        figure.appendChild(make("figcaption", "", item.text));
+        section.appendChild(figure);
         parts.appendChild(section);
       });
     }

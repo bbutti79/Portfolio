@@ -169,6 +169,59 @@ window.SITE_DATA = {
         }
       ],
       docs: [{ label: "스토리보드", href: "assets/docs/work-4-storyboard.pdf" }]
+
+    },
+    {
+      id: "dalcraig-18",
+      no: "06",
+      title: "DALCRAIG 18",
+      tag: "AI BRAND COMMERCIAL",
+      short: "가상의 하이랜드 싱글 몰트 · 제품 디자인부터 AI 광고 제작과 편집까지",
+      thumbs: [{
+        src: "assets/img/dalcraig-18.webp",
+        alt: "암석 위에 놓인 DALCRAIG 18 보틀과 광고 카피 BORN FROM STONE. REFINED BY OAK.",
+        ai: "Seedance 2.5",
+        tools: "FFmpeg"
+      }],
+      parts: [{
+        video: {
+          label: "최종 광고",
+          src: "assets/video/dalcraig-18.mp4"
+        },
+        fields: [
+          ["유형", "가상의 18년 숙성 하이랜드 싱글 몰트 위스키 브랜드 광고"],
+          ["길이", "16초 · 9:16 · 1080 × 1920 · 24 fps"],
+          ["슬로건", "BORN FROM STONE. REFINED BY OAK."],
+          ["기획 의도", "하이랜드의 암석과 물, 오크와 앰버를 제품 공개로 잇는 질감 중심 연출"],
+          ["담당 역할", "기획 · 아트 디렉션 · 제품 디자인 · AI 영상 제작 · 편집"],
+          ["AI · 소스", "Seedance 2.5 — 제품 콘셉트와 스토리보드를 바탕으로 광고 샷 생성"],
+          ["후반작업", "FFmpeg — 20초·8컷 기획을 16초로 압축 편집 · 출력 규격과 엔딩 타이밍 확인"]
+        ]
+      }],
+      visuals: [
+        {
+          heading: "제품 콘셉트",
+          src: "assets/img/dalcraig-18-concept.webp",
+          alt: "암석 절삭형 보틀에 두꺼운 투명 크리스털 베이스, 차콜 라벨과 골드 링을 두른 오크 캡을 적용한 제품 콘셉트 보드",
+          text: "하이랜드 암석을 닮은 보틀과 내추럴 오크 캡으로 원산지와 숙성의 시간 표현"
+        },
+        {
+          heading: "연출 스토리보드",
+          src: "assets/img/dalcraig-18-storyboard.webp",
+          alt: "하이랜드 암석과 물, 오크, 위스키를 거쳐 보틀을 공개하는 초기 8컷 스토리보드",
+          text: "STONE → WATER → OAK → WHISKY → PRODUCT REVEAL"
+        }
+      ]
+    },
+    {
+      title: "MOTION STUDIES",
+      tag: "WIP · MOTION DESIGN",
+      short: "공간 전환 · 일러스트 애니메이션 · 모션 디자인 탐구",
+      wip: true,
+      thumbs: [{
+        src: "assets/img/motion-studies.webp",
+        alt: "숲의 거대한 나무 문 너머로 사이버틱 공간이 보이는 전환 콘셉트"
+      }]
     }
   ]
 };
