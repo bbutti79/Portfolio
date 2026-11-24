@@ -202,7 +202,7 @@ window.SITE_DATA = {
       parts: [{
         video: {
           label: "최종 광고",
-          url: "https://youtube.com/shorts/Vh-_JTOiLp8?feature=share",
+          url: "https://youtube.com/shorts/UoEADg2Wmo0?feature=share",
           portrait: true
         },
         fields: [
