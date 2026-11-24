@@ -16,13 +16,29 @@ window.SITE_DATA = {
     name: "이준희",
     role: "영상 기획 · 제작 · 편집",
     headline: [
-      "온라인 게임·서비스 기획 10년+ → 영상 기획·제작",
-      "기획 · 프로덕션 관리 · 영상 제작 · AI 워크플로우"
+      "온라인 게임·서비스 기획 10년+ → 영상 기획·제작"
     ],
+    /* 경력: 원본 이력서 경력 표 기준(회사·기간·담당). 편의점은 점포 정보 없이 연도·직무만 공개 */
     career: [
-      { year: "2026", text: "AI 기반 실무형 3D 영상 크리에이터 양성 과정 수강 중" },
-      { year: "2005 – 2018", text: "온라인 게임·서비스 기획 (NHN · 엠게임 · YDOnline · 네오싸이언 · 넷마블)" },
-      { year: "2018 – 2022", text: "편의점 운영 (점주)" }
+      { period: "2016.08 – 2018.09", company: "넷마블", role: "고스톱 기획 및 사업 총괄" },
+      { period: "2013.04 – 2016.06", company: "네오싸이언", role: "포커 기획 총괄" },
+      { period: "2011.05 – 2012.01", company: "YDOnline", role: "유료상품 및 서비스 기획" },
+      { period: "2008.02 – 2011.03", company: "엠게임", role: "유료회원제 및 서비스 기획" },
+      { period: "2005.11 – 2007.11", company: "NHN", role: "지표 관리 · 운영 툴 기획" },
+      { period: "2018 – 2022", company: "편의점 운영", role: "점주" }
+    ],
+    /* 교육: 확인된 수강 기간·상태만 표기(미확인 날짜는 넣지 않음). status 는 보조 글씨 */
+    education: [
+      { title: "영상 제작 교육", detail: "Photoshop · Illustrator · Premiere Pro · After Effects · Cinema 4D", status: "수강 중" },
+      { title: "Claude 기반 업무자동화 과정", detail: "Claude를 활용한 업무자동화", status: "수강 완료 · 2026.11" },
+      { title: "컴퓨터공학 전공", detail: "졸업" },
+      { title: "비트컴퓨터 전문가과정", detail: "프로그래밍 학습" }
+    ],
+    strengthsTitle: "영상 제작에 이어지는 경험",
+    strengths: [
+      { title: "데이터 기반 콘텐츠 기획", text: "데이터 분석·사업기획 경험을 바탕으로 트렌드와 타깃을 파악하고, 콘텐츠 방향 설정과 성과 지표 해석에 활용 가능" },
+      { title: "완성까지 이어가는 제작 관리", text: "기획 총괄과 협업 경험을 제작 단계·일정·수정 우선순위 관리로 연결" },
+      { title: "기술을 이해하는 작업 설계", text: "프로그래밍 학습 기반과 Claude 업무자동화 교육을 활용한 제작 업무 흐름 설계" }
     ],
     toolGroups: [
       { label: "영상 · 모션", items: ["Premiere Pro", "After Effects"] },

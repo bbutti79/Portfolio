@@ -35,6 +35,12 @@
     nav.addEventListener("click", function (event) {
       if (event.target.closest("a")) { setOpen(false); }
     });
+    /* 메뉴 밖을 누르면 닫는다(열린 메뉴가 화면을 가리지 않게) */
+    document.addEventListener("click", function (event) {
+      if (!nav.classList.contains("is-open")) { return; }
+      if (nav.contains(event.target) || toggle.contains(event.target)) { return; }
+      setOpen(false);
+    });
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && nav.classList.contains("is-open")) {
         setOpen(false);
@@ -297,7 +303,7 @@
   function initReveal() {
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce || !("IntersectionObserver" in window)) { return; }
-    var targets = document.querySelectorAll(".section-head, .featured, .tile, .about-top, .tools, .contact-email, .contact-actions");
+    var targets = document.querySelectorAll(".section-head, .featured, .tile, .about-top, .about-cols, .strengths, .tools, .contact-email, .contact-actions");
     if (!targets.length) { return; }
     document.documentElement.classList.add("reveal-on");
     var observer = new IntersectionObserver(function (entries) {
@@ -340,33 +346,115 @@
       lead.appendChild(make("p", index === 0 ? "about-line1" : "about-line2", line));
     });
     top.appendChild(lead);
+    main.appendChild(top);
+
+    /* CAREER(왼쪽) · EDUCATION(오른쪽). 좁은 화면에서는 위아래로 쌓인다 */
+    var cols = make("div", "about-cols");
 
     var career = make("div", "about-career");
     career.appendChild(make("h3", "mini-title", "CAREER"));
     var list = make("ul", "career-list");
     (about.career || []).forEach(function (row) {
       var li = make("li");
-      li.appendChild(make("span", "yr", row.year));
-      li.appendChild(make("span", "tx", row.text));
+      li.appendChild(make("span", "yr", row.period));
+      var text = make("span", "tx");
+      text.appendChild(make("strong", "co", row.company));
+      text.appendChild(make("span", "role", row.role));
+      li.appendChild(text);
       list.appendChild(li);
     });
     career.appendChild(list);
-    top.appendChild(career);
-    main.appendChild(top);
+    cols.appendChild(career);
+
+    var edu = make("div", "about-edu");
+    edu.appendChild(make("h3", "mini-title", "EDUCATION"));
+    var eduList = make("ul", "career-list edu-list");
+    (about.education || []).forEach(function (row) {
+      var li = make("li");
+      var text = make("span", "tx");
+      text.appendChild(make("strong", "co", row.title));
+      text.appendChild(make("span", "role", row.detail));
+      if (row.status) { text.appendChild(make("span", "edu-status", row.status)); }
+      li.appendChild(text);
+      eduList.appendChild(li);
+    });
+    edu.appendChild(eduList);
+    cols.appendChild(edu);
+    main.appendChild(cols);
+
     layout.appendChild(main);
     box.appendChild(layout);
 
+    /* 영상 제작에 이어지는 경험: 제목 + 설명을 한 묶음씩 3개 */
+    if ((about.strengths || []).length) {
+      var strengths = make("div", "strengths");
+      strengths.appendChild(make("h3", "mini-title", about.strengthsTitle || "STRENGTHS"));
+      var sList = make("ul", "strength-list");
+      about.strengths.forEach(function (item, index) {
+        var li = make("li", "strength");
+        li.appendChild(make("span", "strength-no", String(index + 1).padStart(2, "0")));
+        li.appendChild(make("h4", "strength-title", item.title));
+        li.appendChild(make("p", "strength-text", item.text));
+        sList.appendChild(li);
+      });
+      strengths.appendChild(sList);
+      box.appendChild(strengths);
+    }
+
     var tools = make("div", "tools");
     tools.appendChild(make("h3", "mini-title", "TOOLS"));
-    (about.toolGroups || []).forEach(function (group) {
+    var ABBR = {
+      "Premiere Pro": "Pr", "After Effects": "Ae", "Photoshop": "Ps", "Illustrator": "Ai", "Cinema 4D": "C4",
+      "Seedance": "Sd", "Runway": "Rw", "Google Flow": "Fl", "Higgsfield": "Hf", "Midjourney": "Mj",
+      "Suno": "Su", "ChatGPT": "GP", "Claude": "Cl", "Antigravity": "Ag"
+    };
+    /* 로컬 SVG 로고. Adobe·Cinema 4D는 공식 배포 원본, 기타는 기존 자산 유지 */
+    var LOGO = {
+      "Premiere Pro": "adobepremierepro", "After Effects": "adobeaftereffects", "Photoshop": "adobephotoshop",
+      "Illustrator": "adobeillustrator", "Cinema 4D": "cinema4d", "ChatGPT": "openai", "Claude": "claude"
+    };
+    /* 로컬 PNG 로고. Suno는 공식 사이트 아이콘. 로드 실패 시 약어로 대체 */
+    var LOGO_PNG = {
+      "Seedance": "seedance", "Runway": "runway", "Google Flow": "google-flow",
+      "Higgsfield": "higgsfield", "Midjourney": "midjourney", "Antigravity": "antigravity", "Suno": "suno"
+    };
+    var split = make("div", "tools-split");
+    var colTools = make("div", "tools-col");
+    var colAi = make("div", "tools-col");
+    (about.toolGroups || []).forEach(function (group, groupIndex) {
       var row = make("div", "tool-group");
       row.appendChild(make("p", "tool-label", group.label));
-      var tags = make("ul", "tag-list");
-      (group.items || []).forEach(function (name) { tags.appendChild(make("li", "", name)); });
-      row.appendChild(tags);
-      tools.appendChild(row);
+      var grid = make("ul", "tool-grid");
+      (group.items || []).forEach(function (name) {
+        var item = make("li", "tool-item tool-tone-" + (groupIndex % 3));
+        var icon;
+        if (LOGO[name] || LOGO_PNG[name]) {
+          icon = make("span", "tool-icon tool-icon-logo");
+          var logo = make("img");
+          logo.src = "assets/img/tools/" + (LOGO[name] ? LOGO[name] + ".svg" : LOGO_PNG[name] + ".png");
+          logo.onerror = function () {
+            icon.className = "tool-icon";
+            icon.textContent = ABBR[name] || name.slice(0, 2);
+          };
+          logo.alt = "";
+          logo.width = 24;
+          logo.height = 24;
+          icon.appendChild(logo);
+        } else {
+          icon = make("span", "tool-icon", ABBR[name] || name.slice(0, 2));
+        }
+        icon.setAttribute("aria-hidden", "true");
+        item.appendChild(icon);
+        item.appendChild(make("span", "tool-name", name));
+        grid.appendChild(item);
+      });
+      row.appendChild(grid);
+      (group.label === "AI" ? colAi : colTools).appendChild(row);
     });
-    main.appendChild(tools);
+    split.appendChild(colTools);
+    split.appendChild(colAi);
+    tools.appendChild(split);
+    box.appendChild(tools); /* TOOLS는 소개 아래 전폭, 2분할(왼쪽 영상·그래픽 툴 / 오른쪽 AI) */
   }
 
   /* ---------- 홈: CONTACT (이메일 복사 · 메일 보내기) ---------- */
@@ -442,12 +530,143 @@
     return list;
   }
 
+  /* ---------- 제작 자료 확대 보기 (기획서·스토리보드·편집 화면 등 읽어야 하는 이미지) ---------- */
+  var zoom = null;   /* 대화상자는 처음 열 때 한 번만 만든다 */
+
+  function zoomSupported() {
+    return typeof window.HTMLDialogElement === "function" && typeof window.HTMLDialogElement.prototype.showModal === "function";
+  }
+
+  function zoomIcon() {
+    var ns = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.setAttribute("width", "14");
+    svg.setAttribute("height", "14");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    var path = document.createElementNS(ns, "path");
+    path.setAttribute("d", "M9 2h5v5M7 14H2V9M14 2L9.5 6.5M2 14l4.5-4.5");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "currentColor");
+    path.setAttribute("stroke-width", "1.8");
+    svg.appendChild(path);
+    return svg;
+  }
+
+  function buildZoom() {
+    var dialog = make("dialog", "zoom-dialog");
+    dialog.setAttribute("aria-labelledby", "zoom-title");
+    var panel = make("div", "zoom-panel");
+    var bar = make("div", "zoom-bar");
+    var heading = make("div", "zoom-heading");
+    var title = make("p", "zoom-title");
+    title.id = "zoom-title";
+    var size = make("p", "zoom-size");
+    heading.appendChild(title);
+    heading.appendChild(size);
+    var fit = make("button", "zoom-btn", "");
+    fit.type = "button";
+    var close = make("button", "zoom-btn zoom-close", "닫기");
+    close.type = "button";
+    bar.appendChild(heading);
+    bar.appendChild(fit);
+    bar.appendChild(close);
+    var scroll = make("div", "zoom-scroll");
+    scroll.tabIndex = 0;
+    scroll.setAttribute("role", "region");
+    scroll.setAttribute("aria-label", "확대한 이미지 (화살표 키로 스크롤)");
+    var img = make("img", "zoom-img");
+    img.alt = "";
+    scroll.appendChild(img);
+    panel.appendChild(bar);
+    panel.appendChild(scroll);
+    dialog.appendChild(panel);
+    document.body.appendChild(dialog);
+
+    /* Tab/Shift+Tab은 확대 창의 조작 요소 안에서 순환한다. */
+    dialog.addEventListener("keydown", function (event) {
+      if (event.key !== "Tab") { return; }
+      var first = fit;
+      var last = scroll;
+      var active = document.activeElement;
+      if (event.shiftKey && (active === first || !panel.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !panel.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+    var state = { dialog: dialog, title: title, size: size, fit: fit, img: img, scroll: scroll, opener: null, actual: false };
+
+    function setActual(actual) {
+      state.actual = actual;
+      dialog.classList.toggle("is-actual", actual);
+      fit.setAttribute("aria-pressed", String(actual));
+      fit.textContent = actual ? "화면에 맞추기" : "원본 크기로 보기";
+      scroll.scrollTop = 0;
+      scroll.scrollLeft = 0;
+    }
+    state.setActual = setActual;
+    fit.addEventListener("click", function () { setActual(!state.actual); });
+    close.addEventListener("click", function () { dialog.close(); });
+
+    /* 배경(어두운 영역)을 눌러야만 닫힌다. 내용 안에서 시작한 드래그가 배경에서 끝나도 닫지 않는다 */
+    var downOnBackdrop = false;
+    dialog.addEventListener("pointerdown", function (event) { downOnBackdrop = event.target === dialog; });
+    dialog.addEventListener("click", function (event) {
+      if (event.target === dialog && downOnBackdrop) { dialog.close(); }
+      downOnBackdrop = false;
+    });
+    dialog.addEventListener("close", function () {
+      document.documentElement.classList.remove("zoom-locked");
+      img.removeAttribute("src");
+      if (state.opener && document.contains(state.opener)) { state.opener.focus(); }
+      state.opener = null;
+    });
+    return state;
+  }
+
+  function openZoom(src, alt, label, opener) {
+    if (!zoom) { zoom = buildZoom(); }
+    zoom.opener = opener;
+    zoom.title.textContent = label;
+    zoom.size.textContent = "이미지를 불러오는 중…";
+    zoom.img.alt = alt || "";
+    zoom.img.onload = function () {
+      zoom.size.textContent = "원본 " + zoom.img.naturalWidth + " × " + zoom.img.naturalHeight + " px";
+    };
+    zoom.img.onerror = function () { zoom.size.textContent = "이미지를 불러오지 못했습니다."; };
+    zoom.img.src = src;
+    /* 좁은 화면에서는 글씨를 읽을 수 있게 원본 크기로 시작하고, 넓은 화면에서는 화면에 맞춘다 */
+    zoom.setActual(window.innerWidth < 720);
+    document.documentElement.classList.add("zoom-locked");
+    zoom.dialog.showModal();
+    zoom.dialog.querySelector(".zoom-close").focus();
+  }
+
+  /* 이미지를 감싸고 오른쪽 아래에 '확대' 버튼을 붙인다. 대화상자를 못 쓰는 브라우저에서는 이미지만 그대로 둔다 */
+  function zoomable(img, label) {
+    if (!zoomSupported() || !img.src) { return img; }
+    var wrap = make("div", "zoom-wrap");
+    wrap.appendChild(img);
+    var button = make("button", "zoom-open");
+    button.type = "button";
+    button.setAttribute("aria-label", label + " 크게 보기");
+    button.appendChild(zoomIcon());
+    button.appendChild(make("span", "", "확대"));
+    button.addEventListener("click", function () { openZoom(img.currentSrc || img.src, img.alt, label, button); });
+    wrap.appendChild(button);
+    return wrap;
+  }
+
   /* PROJECT SNAPSHOT: 이미지 2장 비교 + 작업 화면 1장. 문구는 모두 HTML 텍스트(이미지에 합성하지 않음) */
   function snapFigure(item, className) {
     var fig = make("figure", "snap-fig " + (className || ""));
     var img = make("img");
     img.src = item.src; img.alt = item.alt || ""; img.width = item.w; img.height = item.h; img.loading = "lazy";
-    fig.appendChild(img);
+    fig.appendChild(zoomable(img, [item.tag, item.text].filter(Boolean).join(" · ")));
     var cap = make("figcaption", "snap-cap");
     cap.appendChild(make("span", "snap-tag", item.tag));
     cap.appendChild(make("span", "snap-text", item.text));
@@ -524,7 +743,7 @@
         img.src = item.src;
         img.alt = item.alt;
         img.loading = "lazy";
-        figure.appendChild(img);
+        figure.appendChild(zoomable(img, item.heading));
         figure.appendChild(make("figcaption", "", item.text));
         section.appendChild(figure);
         parts.appendChild(section);
@@ -575,7 +794,7 @@
     var lastMax = -1;
     var OFFSET = 90; /* 고정 헤더 높이만큼 */
 
-    ["home", "works", "about", "contact"].forEach(function (id) {
+    ["home", "about", "works", "contact"].forEach(function (id) {
       var el = document.getElementById(id);
       if (!el) { return; }
       var navLink = $('.site-nav a[href="#' + id + '"]');
@@ -630,20 +849,40 @@
     var fill = $("#reel-fill");
     var tc = $("#reel-tc");
     var toggle = $("#reel-toggle");
-    var seek = $("#reel-seek");
+    var seek = $("#reel-seek");           /* input[type=range] */
+    var status = $("#reel-status");
+    var retry = $("#reel-retry");
+    var source = $("source", video);
     if (!fill || !tc || !toggle) { return; }
 
     var FPS = 30;
+    var KEY_STEP = 5;      /* 방향키 이동(초) */
+    var PAGE_STEP = 10;    /* PageUp/PageDown 이동(초) */
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var userPaused = reduce;      // 움직임 줄이기 설정이면 자동 재생하지 않음
     var inView = true;
     var chapter = -1;
     var frameId = 0;
+    var dragging = false;         // 포인터로 재생 위치를 잡고 있는 동안
+    var pending = null;           // 사용자가 옮긴 목표 시간(시크가 끝날 때까지 화면 값으로 사용)
+    var failed = false;           // 영상 파일을 불러오지 못한 상태
+    var lastSecond = -1;
+    var loadingTimer = 0;
+    var bufferTimer = 0;
 
     function pad(n) { return (n < 10 ? "0" : "") + n; }
     function fmt(sec) {
       var s = Math.max(0, sec || 0);
       return "00:" + pad(Math.floor(s / 60) % 60) + ":" + pad(Math.floor(s) % 60) + ":" + pad(Math.floor((s % 1) * FPS));
+    }
+    function spoken(sec) {
+      var s = Math.max(0, Math.floor(sec || 0));
+      return (s >= 60 ? Math.floor(s / 60) + "분 " : "") + (s % 60) + "초";
+    }
+    function hasDuration() { return isFinite(video.duration) && video.duration > 0; }
+    function clampTime(t) {
+      if (!hasDuration()) { return Math.max(0, t); }
+      return Math.min(Math.max(0, t), Math.max(0, video.duration - 0.1));
     }
     function chapterAt(t) {
       var found = 0;
@@ -652,11 +891,40 @@
       });
       return found;
     }
+
+    /* 상태 안내: kind = "" | "loading" | "buffering" | "error" */
+    function setStatus(kind) {
+      if (!status) { return; }
+      var text = "";
+      if (kind === "loading") { text = "영상을 불러오는 중입니다…"; }
+      else if (kind === "buffering") { text = "버퍼링 중입니다…"; }
+      else if (kind === "error") { text = "하이라이트 릴 영상을 불러오지 못했습니다. 아래 작품 목록에서 각 영상을 볼 수 있습니다."; }
+      if (status.textContent !== text) { status.textContent = text; }
+      if (retry) { retry.hidden = kind !== "error"; }
+    }
+
+    /* 영상 정보(길이)가 준비되면 슬라이더를 켜고, 아니면 끈다 */
+    function syncRange() {
+      if (!seek) { return; }
+      var ready = hasDuration() && !failed;
+      seek.disabled = !ready;
+      seek.max = ready ? String(video.duration) : "0";
+    }
+
     function render() {
-      var d = video.duration || 0;
-      var t = video.currentTime || 0;
+      var d = hasDuration() ? video.duration : 0;
+      var t = (pending !== null && (dragging || video.seeking)) ? pending : (video.currentTime || 0);
+      if (d && t > d) { t = d; }
       fill.style.width = (d ? Math.min(100, t / d * 100) : 0).toFixed(2) + "%";
       tc.textContent = fmt(t) + " / " + fmt(d);
+      if (seek) {
+        if (!dragging) { seek.value = String(t); }
+        var whole = Math.floor(t);
+        if (whole !== lastSecond) {
+          lastSecond = whole;
+          seek.setAttribute("aria-valuetext", d ? spoken(t) + " / " + spoken(d) : "영상 정보를 불러오는 중");
+        }
+      }
       var index = chapterAt(t);
       if (index !== chapter) {
         chapter = index;
@@ -681,41 +949,144 @@
       if (promise && promise.catch) { promise.catch(function () { syncButton(); }); }
     }
 
+    /* 불러오기 실패 / 복구 */
+    function fail() {
+      if (failed) { return; }
+      failed = true;
+      window.clearTimeout(loadingTimer);
+      window.clearTimeout(bufferTimer);
+      reel.classList.add("is-static");
+      syncRange();
+      setStatus("error");
+    }
+    function recover() {
+      window.clearTimeout(loadingTimer);
+      if (failed) {
+        failed = false;
+        reel.classList.remove("is-static");
+      }
+      syncRange();
+      setStatus("");
+    }
+    /* 1.5초가 지나도 정보가 없고 실제로 내려받는 중이면 안내(빠르게 열리면 깜빡이지 않게) */
+    function watchLoading() {
+      window.clearTimeout(loadingTimer);
+      loadingTimer = window.setTimeout(function () {
+        if (!failed && video.readyState < 1 && video.networkState === 2) { setStatus("loading"); }
+      }, 1500);
+    }
+
     video.addEventListener("play", function () { syncButton(); window.cancelAnimationFrame(frameId); loop(); });
     video.addEventListener("pause", function () { syncButton(); render(); });
-    video.addEventListener("loadedmetadata", render);
-    video.addEventListener("seeked", render);
-    video.addEventListener("error", function () { reel.classList.add("is-static"); });
+    video.addEventListener("loadedmetadata", function () { recover(); render(); });
+    video.addEventListener("durationchange", function () { syncRange(); render(); });
+    video.addEventListener("loadeddata", recover);
+    video.addEventListener("timeupdate", render);
+    video.addEventListener("seeked", function () { if (!dragging) { pending = null; } render(); });
+    /* 파일 요청 실패는 <source>에서 발생하고(video로 전달되지 않음), 디코딩 오류는 video에서 발생한다 */
+    video.addEventListener("error", fail);
+    if (source) { source.addEventListener("error", fail); }
+    /* 재생 중 데이터가 모자랄 때만 짧게 안내(0.8초 이상 걸릴 때) */
+    video.addEventListener("waiting", function () {
+      window.clearTimeout(bufferTimer);
+      bufferTimer = window.setTimeout(function () { if (!failed && !video.paused && video.readyState < 3) { setStatus("buffering"); } }, 800);
+    });
+    video.addEventListener("playing", function () { window.clearTimeout(bufferTimer); if (!failed) { setStatus(""); } });
+    video.addEventListener("canplay", function () { window.clearTimeout(bufferTimer); if (!failed) { setStatus(""); } });
+
+    /* 스크립트가 붙기 전에 이미 실패했을 수 있다(네트워크 상태 3 = 소스 없음) */
+    if (video.error || video.networkState === 3) { fail(); }
+    else { watchLoading(); }
+
+    if (retry) {
+      retry.addEventListener("click", function () {
+        failed = false;
+        reel.classList.remove("is-static");
+        setStatus("loading");
+        pending = null;
+        video.load();
+        watchLoading();
+        if (!userPaused) { play(); }
+      });
+    }
 
     toggle.addEventListener("click", function () {
       if (video.paused) { userPaused = false; play(); } else { userPaused = true; video.pause(); }
     });
+
+    /* 사용자가 위치를 옮긴 뒤: 멈춰 있던 의도는 그대로 두고, 자동 재생이 막혀서 멈춘 경우에만 재생 */
+    function afterUserSeek() {
+      if (!userPaused && video.paused) { play(); }
+    }
+    function seekTo(t) {
+      pending = clampTime(t);
+      video.currentTime = pending;
+      render();
+    }
+
     Array.prototype.forEach.call(chips, function (chip) {
       chip.addEventListener("click", function () {
-        video.currentTime = Number(chip.getAttribute("data-start")) || 0;
-        render();
-        if (!userPaused && video.paused) { play(); }
+        seekTo(Number(chip.getAttribute("data-start")) || 0);
+        afterUserSeek();
       });
     });
+
     if (seek) {
-      seek.addEventListener("click", function (event) {
-        var box = seek.getBoundingClientRect();
-        var ratio = Math.min(0.999, Math.max(0, (event.clientX - box.left) / box.width));
-        if (video.duration) { video.currentTime = ratio * video.duration; render(); }
+      /* 드래그·터치·키보드로 값이 바뀔 때마다 영상 위치를 따라 옮긴다 */
+      seek.addEventListener("input", function () {
+        if (!hasDuration()) { return; }
+        seekTo(Number(seek.value));
+      });
+      seek.addEventListener("change", afterUserSeek);
+      seek.addEventListener("pointerdown", function () {
+        if (seek.disabled) { return; }
+        dragging = true;
+        reel.classList.add("is-seeking");
+      });
+      /* 슬라이더 밖에서 손을 떼도 끝나도록 창 전체에서 받는다 */
+      var endDrag = function () {
+        if (!dragging) { return; }
+        dragging = false;
+        reel.classList.remove("is-seeking");
+        if (!video.seeking) { pending = null; }
+        render();
+      };
+      window.addEventListener("pointerup", endDrag);
+      window.addEventListener("pointercancel", endDrag);
+      seek.addEventListener("blur", endDrag);
+      /* 방향키 이동량을 고정(초 단위)해서 브라우저마다 같게 동작시킨다 */
+      seek.addEventListener("keydown", function (event) {
+        if (seek.disabled) { return; }
+        var now = pending !== null && video.seeking ? pending : (video.currentTime || 0);
+        var next = null;
+        switch (event.key) {
+          case "ArrowRight": case "ArrowUp": next = now + KEY_STEP; break;
+          case "ArrowLeft": case "ArrowDown": next = now - KEY_STEP; break;
+          case "PageUp": next = now + PAGE_STEP; break;
+          case "PageDown": next = now - PAGE_STEP; break;
+          case "Home": next = 0; break;
+          case "End": next = video.duration; break;
+          default: return;
+        }
+        event.preventDefault();
+        seekTo(next);
+        afterUserSeek();
       });
     }
+
     // 화면 밖에서는 멈춰서 리소스를 아낀다(사용자가 직접 멈춘 경우는 그대로 유지)
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (entries) {
         inView = entries[0].isIntersecting;
-        if (inView && !userPaused && video.paused) { play(); }
+        if (inView && !userPaused && video.paused && !failed) { play(); }
         if (!inView && !video.paused) { video.pause(); }
       }, { threshold: 0.25 }).observe(reel);
     }
 
+    syncRange();
     render();
     syncButton();
-    if (!userPaused) { play(); }
+    if (!userPaused && !failed) { play(); }
   }
 
   initNav();
