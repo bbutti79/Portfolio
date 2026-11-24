@@ -23,7 +23,9 @@
     var nav = document.getElementById("site-nav");
     if (!toggle || !nav) { return; }
 
+    var closeWorks = initWorksNav(nav);
     var setOpen = function (open) {
+      if (!open) { closeWorks(); }
       nav.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
@@ -42,7 +44,7 @@
       setOpen(false);
     });
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && nav.classList.contains("is-open")) {
+      if (!event.defaultPrevented && event.key === "Escape" && nav.classList.contains("is-open")) {
         setOpen(false);
         toggle.focus();
       }
@@ -50,6 +52,57 @@
     window.addEventListener("resize", function () {
       if (window.innerWidth >= 720) { setOpen(false); }
     });
+  }
+
+  /* WORKS 링크는 목록 이동, 별도 버튼은 완성작 하위 목록을 펼친다. */
+  function initWorksNav(nav) {
+    var link = nav.querySelector('a[href$="#works"]');
+    if (!link) { return function () {}; }
+    var item = link.parentNode;
+    item.classList.add("nav-works");
+    var button = make("button", "works-toggle", "▾");
+    button.type = "button";
+    button.setAttribute("aria-label", "작품 목록 펼치기");
+    button.setAttribute("aria-controls", "works-submenu");
+    button.setAttribute("aria-expanded", "false");
+    var list = make("ul", "works-submenu");
+    list.id = "works-submenu"; list.hidden = true;
+    var currentId = new URLSearchParams(location.search).get("id");
+    (data.works || []).filter(function (work) { return !work.wip && work.id; }).forEach(function (work) {
+      var li = make("li"); var a = make("a", "", work.title);
+      a.href = workHref(work);
+      if (currentId === work.id && document.getElementById("work-detail")) { a.setAttribute("aria-current", "page"); }
+      li.appendChild(a); list.appendChild(li);
+    });
+    item.appendChild(button); item.appendChild(list);
+    var timer;
+    function setOpen(open) {
+      clearTimeout(timer); list.hidden = !open;
+      button.setAttribute("aria-expanded", String(open));
+      button.setAttribute("aria-label", open ? "작품 목록 접기" : "작품 목록 펼치기");
+    }
+    button.addEventListener("click", function () { setOpen(list.hidden); });
+    item.addEventListener("pointerenter", function (event) {
+      if (event.pointerType === "mouse" && window.innerWidth >= 720) { setOpen(true); }
+    });
+    item.addEventListener("pointerleave", function (event) {
+      if (event.pointerType === "mouse" && window.innerWidth >= 720) {
+        timer = setTimeout(function () { if (!item.contains(document.activeElement)) { setOpen(false); } }, 180);
+      }
+    });
+    item.addEventListener("focusout", function () {
+      setTimeout(function () { if (!item.contains(document.activeElement)) { setOpen(false); } }, 0);
+    });
+    item.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !list.hidden) {
+        event.preventDefault(); event.stopPropagation(); setOpen(false); button.focus();
+      } else if (event.key === "ArrowDown" && (event.target === button || event.target === link)) {
+        event.preventDefault(); setOpen(true); list.querySelector("a").focus();
+      }
+    });
+    document.addEventListener("click", function (event) { if (!item.contains(event.target)) { setOpen(false); } });
+    window.addEventListener("resize", function () { setOpen(false); });
+    return function () { setOpen(false); };
   }
 
   /* 홈에서 스크롤 위치에 맞춰 메뉴 밑줄 이동 (지원하지 않는 브라우저에서는 건너뜀) */
@@ -202,7 +255,7 @@
 
   function buildTile(film, options) {
     var thumb = film.thumb || {};
-    var cell = make("article", "tile");
+    var cell = make(options && options.numbered ? "article" : "div", "tile");
     var media = make(film.href ? "a" : "div", "tile-media");
     if (film.href) {
       media.href = film.href;
@@ -222,6 +275,7 @@
       var head = make("div", "tile-head");
       var title = make("h3", "tile-title");
       title.appendChild(make("span", "no", film.no));
+      title.appendChild(document.createTextNode(" "));
       var bar = make("span", "bar");
       bar.setAttribute("aria-hidden", "true");
       title.appendChild(bar);

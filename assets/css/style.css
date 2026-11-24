@@ -990,3 +990,16 @@ html.zoom-locked {
     margin-top: 40px;
   }
 }
+
+/* WORKS 하위 작품 목록 */
+.nav-works { position: relative; display: flex; align-items: center; flex-wrap: wrap; }
+.works-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; min-height: 44px; border: 0; border-radius: 4px; background: transparent; color: var(--ink); cursor: pointer; font-size: 1rem; }
+.works-toggle:hover, .works-toggle[aria-expanded="true"] { background: var(--paper); color: var(--accent-text); }
+.site-nav .works-submenu { position: absolute; top: 100%; right: 0; z-index: 5; display: flex; flex-direction: column; gap: 0; width: 320px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 100px); overflow-y: auto; padding: 8px; border: 1px solid var(--hair-strong); border-radius: 8px; background: var(--card); box-shadow: 0 12px 28px rgba(26,26,26,.15); }
+.site-nav .works-submenu[hidden] { display: none; }
+.site-nav .works-submenu a { display: block; padding: 10px 12px; min-height: 44px; border-bottom: 0; border-radius: 4px; font-size: .875rem; letter-spacing: 0; overflow-wrap: anywhere; }
+.site-nav .works-submenu a:hover, .site-nav .works-submenu a:focus-visible, .site-nav .works-submenu a[aria-current="page"] { background: var(--paper); color: var(--accent-text); }
+@media (max-width: 719px) {
+  .nav-works > a { flex: 1; }
+  .site-nav .works-submenu { position: static; width: 100%; max-width: none; max-height: none; margin: 0 0 8px; box-shadow: none; }
+}
