@@ -54,7 +54,7 @@ window.SITE_DATA = {
       title: "방구석 파이터의 비밀 순찰대",
       tag: "MUSIC VIDEO",
       short: "잠든 주인을 지키는 두 강아지의 비밀 순찰 · 약 3분",
-      thumbs: [{ src: "assets/img/work-1a.jpg", ai: "Seedance · Google Flow · Runway · Suno", tools: "After Effects · Premiere Pro", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" }],
+      thumbs: [{ src: "assets/img/work-1a.jpg", poster: "assets/img/preview-mv.jpg", preview: "assets/video/preview-mv.mp4", ai: "Seedance · Google Flow · Runway · Suno", tools: "After Effects · Premiere Pro", alt: "방구석 파이터의 비밀 순찰대 대표 장면: 두 강아지" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/O1yg1X-ZAHg" },
@@ -90,7 +90,7 @@ window.SITE_DATA = {
       title: "키네틱타이포",
       tag: "KINETIC TYPOGRAPHY",
       short: "같은 노래를 가사 타이포 모션으로 다시 만든 버전 · 약 35초",
-      thumbs: [{ src: "assets/img/work-1b.jpg", ai: "Seedance · Higgsfield", tools: "After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }],
+      thumbs: [{ src: "assets/img/work-1b.jpg", poster: "assets/img/preview-typo.jpg", posterAlt: "너를이라는 글자와 두 강아지가 등장하는 타이포그래피", preview: "assets/video/preview-typo.mp4", ai: "Seedance · Higgsfield", tools: "After Effects", alt: "키네틱타이포 대표 장면: 지켜줄게 타이포와 두 강아지" }],
       parts: [
         {
           video: { label: "모션 타이포", url: "https://youtu.be/-hy7MMrEQO4" },
@@ -115,7 +115,7 @@ window.SITE_DATA = {
       title: "크아아앙: 전설의 시작",
       tag: "AD FILM",
       short: "던전 보스 드래곤의 출근과 퇴근",
-      thumbs: [{ src: "assets/img/work-2.jpg", ai: "Google Flow · Suno", tools: "Premiere Pro", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
+      thumbs: [{ src: "assets/img/work-2.jpg", poster: "assets/img/preview-ad.jpg", posterAlt: "표정이 강조된 붉은 드래곤의 얼굴", preview: "assets/video/preview-ad.mp4", ai: "Google Flow · Suno", tools: "Premiere Pro", alt: "크아아앙 대표 장면: 노움 여전사와 드래곤의 대치" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/gJrfZl6HIhc" },
@@ -141,7 +141,7 @@ window.SITE_DATA = {
       title: "Normal Weekend",
       tag: "EDITING & SOUND",
       short: "평온한 주말 × 10000% 과장 사운드",
-      thumbs: [{ src: "assets/img/work-3.jpg", ai: "Google Flow · Suno", tools: "Premiere Pro", alt: "Normal Weekend 대표 장면: 설거지 스펀지 클로즈업" }],
+      thumbs: [{ src: "assets/img/work-3.jpg", poster: "assets/img/preview-daily.jpg", posterAlt: "수도꼭지에서 물이 쏟아지는 설거지 장면", preview: "assets/video/preview-daily.mp4", ai: "Google Flow · Suno", tools: "Premiere Pro", alt: "Normal Weekend 대표 장면: 설거지 스펀지 클로즈업" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/5ol06Ry-PKA" },
@@ -166,7 +166,7 @@ window.SITE_DATA = {
       title: "마음의 장마",
       tag: "CAMPAIGN FILM",
       short: "고립은 장마로, 관심은 노란 우산으로",
-      thumbs: [{ src: "assets/img/work-4.jpg", ai: "Google Flow · Midjourney · Suno", tools: "Premiere Pro · After Effects", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
+      thumbs: [{ src: "assets/img/work-4.jpg", poster: "assets/img/preview-film.jpg", posterAlt: "빗속에 앉은 인물에게 노란 우산을 들고 다가가는 인물", preview: "assets/video/preview-film.mp4", ai: "Google Flow · Midjourney · Suno", tools: "Premiere Pro · After Effects", alt: "마음의 장마 대표 장면: 노란 우산 아래 두 인물" }],
       parts: [
         {
           video: { label: "본편", url: "https://youtu.be/4BU09Yfcsy4" },
@@ -194,8 +194,8 @@ window.SITE_DATA = {
       tag: "AI BRAND COMMERCIAL",
       short: "가상의 하이랜드 싱글 몰트 · 제품 디자인부터 AI 광고 제작과 편집까지",
       thumbs: [{
-        src: "assets/img/dalcraig-18.webp",
-        alt: "암석 위에 놓인 DALCRAIG 18 보틀과 광고 카피 BORN FROM STONE. REFINED BY OAK.",
+        src: "assets/img/dalcraig-18.webp", poster: "assets/img/preview-whisky.jpg", preview: "assets/video/preview-whisky.mp4",
+        alt: "얼음이 담긴 잔에 앰버빛 위스키를 따르는 장면",
         ai: "Seedance 2.5",
         tools: "FFmpeg · Premiere Pro"
       }],

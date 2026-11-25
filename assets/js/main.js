@@ -244,7 +244,7 @@
           short: part.cardShort || work.short,
           href: work.wip ? null : workHref(work) + (part.anchor ? "#" + part.anchor : ""),
           thumb: {
-            src: thumb.src, alt: thumb.alt, ai: thumb.ai, tools: thumb.tools,
+            src: thumb.src, alt: thumb.alt, ai: thumb.ai, tools: thumb.tools, preview: thumb.preview, poster: thumb.poster, posterAlt: thumb.posterAlt,
             tag: thumb.tag || work.tag
           }
         });
@@ -263,11 +263,30 @@
     }
 
     var img = make("img", "tile-poster");
-    img.src = thumb.src;
-    img.alt = thumb.alt || "";
+    img.src = thumb.poster || thumb.src;
+    img.alt = thumb.posterAlt || thumb.alt || "";
     img.loading = "lazy";
     media.appendChild(img);
 
+    if (thumb.preview && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      var preview = make("video", "tile-preview");
+      preview.muted = true;
+      preview.loop = true;
+      preview.playsInline = true;
+      preview.preload = "none";
+      preview.setAttribute("aria-hidden", "true");
+      media.appendChild(preview);
+      function stopPreview() { preview.pause(); preview.classList.remove("is-playing"); }
+      media.addEventListener("mouseenter", function () {
+        if (!preview.src) { preview.src = thumb.preview; }
+        var playing = preview.play();
+        if (playing && playing.catch) { playing.catch(stopPreview); }
+      });
+      media.addEventListener("mouseleave", stopPreview);
+      preview.addEventListener("playing", function () { preview.classList.add("is-playing"); });
+      preview.addEventListener("error", stopPreview);
+      window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", function (event) { if (event.matches) { stopPreview(); } });
+    }
     cell.appendChild(media);
 
     var meta = make("div", "tile-meta");
