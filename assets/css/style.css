@@ -1048,3 +1048,14 @@ html.zoom-locked {
 @media (max-width: 700px) { .tools-intro { grid-template-columns: 1fr; } .section-title .name { overflow-wrap: anywhere; } }
 
 .tile-wip-overlay { position: absolute; z-index: 3; left: 50%; top: 62%; transform: translate(-50%, -50%); padding: .4em .9em; border-radius: 8px; background: rgba(20, 20, 20, .8); color: #fff; font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 800; line-height: 1.2; white-space: nowrap; }
+
+/* 모바일 도구 목록: 영상·그래픽 2열, AI 3열 */
+@media (max-width: 719px) {
+  .tools-col:first-child .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .tools-col:last-child .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .tools-col .tool-item { min-width: 0; gap: 6px; padding: 8px; border-radius: 8px; }
+  .tools-col .tool-icon { width: 28px; height: 28px; border-radius: 6px; font-size: .75rem; }
+  .tools-col .tool-icon-logo img { width: 18px; height: 18px; }
+  .tools-col .tool-name { min-width: 0; font-size: .75rem; overflow-wrap: anywhere; }
+  .tools-col:last-child .tool-item { flex-direction: column; justify-content: center; text-align: center; }
+}
