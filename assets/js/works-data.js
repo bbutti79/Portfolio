@@ -82,7 +82,7 @@ window.SITE_DATA = {
         making: { src: "assets/img/mv-premiere.webp", w: 1600, h: 755, tag: "CREATION / EDITING", text: "실제 Premiere Pro 작업 화면", alt: "Premiere Pro 작업 화면: 소스·프로그램 모니터와 타임라인, 방구석 파이터 MV 프로젝트" }
       },
       process: [
-        { title: "기획과 장면 구성", text: "이야기와 가사를 장면으로 구성", images: ["01_planning_document"] },
+        { title: "기획·가사 구상", text: "작품의 큰 이야기 흐름을 잡고 가사 방향을 구상", images: ["01_planning_document"] },
         { title: "음악 제작", text: "Suno로 음악 제작", images: ["02_suno_music_generation"] },
         { title: "곡 구간 정리", text: "Premiere 타임라인에 음악 구간 마커 배치", images: ["03_premiere_markers"] },
         { title: "캐릭터 설계", text: "OWOL 캐릭터의 시각적 기준 설계", images: ["04_owol_character_sheet"] },
