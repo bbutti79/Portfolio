@@ -525,12 +525,13 @@ ul { padding: 0; list-style: none; }
 /* ---------- PROCESS: 대표 비주얼 1장 + 버튼 위치의 투명 링크 ---------- */
 .process-section { padding: 72px 0 80px; }
 .process-visual { position: relative; margin: 0; }
-.process-visual img { display: block; width: 100%; height: auto; }
+.process-visual picture { display: block; overflow: hidden; border-radius: 0 0 6px 6px; }
+.process-visual img { display: block; width: 100%; height: auto; margin-top: -6.3%; }
 /* 이미지 속 "제작 과정 보기" 버튼 영역(1672x516 기준 x 70~297, y 398~451) */
-.process-cta { position: absolute; left: 3.15%; top: 72.4%; width: 17.3%; height: 9.9%; border-radius: 6px; }
+.process-cta { position: absolute; left: 3.15%; top: 67%; width: 17.3%; height: 11.8%; border-radius: 6px; }
 
 .process-cta::after { content: ""; position: absolute; inset: -6px; }
-@media (max-width: 700px) { .process-visual { max-width: 564px; } .process-cta { left: 21.3%; top: 84.3%; width: 57.4%; height: 6.5%; } }
+@media (max-width: 700px) { .process-visual { max-width: 564px; } .process-visual img { margin-top: -16%; } .process-cta { left: 21.3%; top: 82.4%; width: 57.4%; height: 7.3%; } }
 .process-cta:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
 /* ---------- CONTACT 큰 문구 ---------- */
