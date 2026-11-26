@@ -241,6 +241,7 @@
         films.push({
           no: String(films.length + 1).padStart(2, "0"),
           title: part.cardTitle || work.title,
+          wip: !!work.wip,
           short: part.cardShort || work.short,
           href: work.wip ? null : workHref(work) + (part.anchor ? "#" + part.anchor : ""),
           thumb: {
@@ -267,6 +268,7 @@
     img.alt = thumb.posterAlt || thumb.alt || "";
     img.loading = "lazy";
     media.appendChild(img);
+    if (film.wip) { media.appendChild(make("span", "tile-wip-overlay", "WORK IN PROGRESS")); }
 
     if (thumb.preview && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       var preview = make("video", "tile-preview");
@@ -310,13 +312,6 @@
         more.setAttribute("aria-hidden", "true");
         more.tabIndex = -1;
         head.appendChild(more);
-      } else {
-        var status = make("span", "tile-status");
-        var label = make("span", "", "WORK IN PROGRESS");
-        label.setAttribute("lang", "en");
-        status.appendChild(label);
-        status.appendChild(make("span", "sr-only", " — 제작 진행 중"));
-        head.appendChild(status);
       }
       meta.appendChild(head);
     }
@@ -762,6 +757,46 @@
     return box;
   }
 
+  function processBlock(steps) {
+    var section = make("section", "mv-process");
+    section.id = "mv-process";
+    section.appendChild(make("p", "snap-label", "03. PROCESS"));
+    section.appendChild(make("h2", "snap-title", "기획에서 후반작업까지"));
+    section.appendChild(make("p", "snap-sub", "실제 제작 자료로 살펴보는 아홉 단계"));
+    var list = make("ol", "mv-process-list");
+    steps.forEach(function (step, index) {
+      var card = make("li", "mv-process-card");
+      card.appendChild(make("span", "mv-process-no", String(index + 1).padStart(2, "0")));
+      card.appendChild(make("h3", "mv-process-title", step.title));
+      card.appendChild(make("p", "mv-process-text", step.text));
+      var gallery = make("div", "mv-process-images" + (step.images.length > 1 ? " is-pair" : ""));
+      step.images.forEach(function (name, imageIndex) {
+        var label = step.title + (step.images.length > 1 ? (imageIndex === 0 ? " · 캐릭터 시트" : " · 배경 시트") : "");
+        var link = make("a", "mv-process-image");
+        link.href = "assets/img/mv-process/originals/" + name + ".png";
+        link.setAttribute("aria-label", label + " 원본 크게 보기");
+        var img = make("img");
+        img.src = "assets/img/mv-process/web/" + name + ".jpg";
+        img.alt = label + " 제작 자료";
+        img.loading = "lazy";
+        img.onerror = function () { link.classList.add("image-failed"); img.alt = "이미지를 불러오지 못했습니다. 원본 열기"; };
+        link.appendChild(img);
+        link.appendChild(make("span", "mv-process-zoom", "원본 확대 ↗"));
+        if (zoomSupported()) {
+          link.addEventListener("click", function (event) {
+            event.preventDefault();
+            openZoom(link.href, img.alt, label, link);
+          });
+        }
+        gallery.appendChild(link);
+      });
+      card.appendChild(gallery);
+      list.appendChild(card);
+    });
+    section.appendChild(list);
+    return section;
+  }
+
   function renderDetail() {
     var article = $("#work-detail");
     if (!article) { return; }
@@ -808,6 +843,7 @@
         }
         parts.appendChild(section);
       });
+      if (work.process && work.process.length) { parts.appendChild(processBlock(work.process)); }
       (work.visuals || []).forEach(function (item) {
         var section = make("section", "detail-block project-visual");
         section.appendChild(make("h2", "part-title", item.heading));
@@ -829,6 +865,7 @@
         var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
         if (target) { target.scrollIntoView({ behavior: "instant" }); }
       };
+      requestAnimationFrame(goAnchor);
       if (document.readyState === "complete") { setTimeout(goAnchor, 150); }
       else { window.addEventListener("load", function () { setTimeout(goAnchor, 150); }); }
     }
@@ -867,7 +904,7 @@
     var lastMax = -1;
     var OFFSET = 90; /* 고정 헤더 높이만큼 */
 
-    ["home", "about", "works", "contact"].forEach(function (id) {
+    ["home", "about", "works", "process", "production-tools", "contact"].forEach(function (id) {
       var el = document.getElementById(id);
       if (!el) { return; }
       var navLink = $('.site-nav a[href="#' + id + '"]');
@@ -875,7 +912,7 @@
       var mark = make("a", "ruler-mark");
       mark.href = "#" + id;
       mark.tabIndex = -1;
-      mark.setAttribute("data-short", noEl ? noEl.textContent.trim() : "00");
+      mark.setAttribute("data-short", noEl ? noEl.textContent.trim() : (id === "process" ? "03" : "00"));
       mark.appendChild(make("span", "ruler-mark-label", navLink ? navLink.textContent.trim() : id.toUpperCase()));
       ruler.appendChild(mark);
       chapters.push({ el: el, mark: mark, top: 0 });

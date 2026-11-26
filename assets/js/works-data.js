@@ -20,12 +20,12 @@ window.SITE_DATA = {
     ],
     /* 경력: 원본 이력서 경력 표 기준(회사·기간·담당). 편의점은 점포 정보 없이 연도·직무만 공개 */
     career: [
-      { period: "2016.08 – 2018.09", company: "넷마블", role: "고스톱 기획 및 사업 총괄" },
+      { period: "2016.06 – 2017.08", company: "넷마블", role: "고스톱 기획 및 사업 총괄" },
       { period: "2013.04 – 2016.06", company: "네오싸이언", role: "포커 기획 총괄" },
-      { period: "2011.05 – 2012.01", company: "YDOnline", role: "유료상품 및 서비스 기획" },
-      { period: "2008.02 – 2011.03", company: "엠게임", role: "유료회원제 및 서비스 기획" },
+      { period: "2011.05 – 2012.02", company: "YDOnline", role: "유료상품 및 서비스 기획" },
+      { period: "2008.02 – 2011.04", company: "엠게임", role: "유료회원제 및 서비스 기획" },
       { period: "2005.11 – 2007.11", company: "NHN", role: "지표 관리 · 운영 툴 기획" },
-      { period: "2018 – 2022", company: "편의점 운영", role: "점주" }
+      { period: "2017.11 – 2022.06", company: "편의점 운영", role: "점주" }
     ],
     /* 교육: 확인된 수강 기간·상태만 표기(미확인 날짜는 넣지 않음). status 는 보조 글씨 */
     education: [
@@ -42,7 +42,7 @@ window.SITE_DATA = {
     ],
     toolGroups: [
       { label: "영상 · 모션", items: ["Premiere Pro", "After Effects"] },
-      { label: "그래픽 · 3D (강의 학습)", items: ["Photoshop", "Illustrator", "Cinema 4D"] },
+      { label: "그래픽 (강의 학습)", items: ["Photoshop", "Illustrator"] },
       { label: "AI", items: ["Seedance", "Runway", "Google Flow", "Higgsfield", "Midjourney", "Suno", "ChatGPT", "Claude", "Antigravity"] }
     ]
   },
@@ -64,7 +64,7 @@ window.SITE_DATA = {
             ["길이", "약 3분"],
             ["로그라인", "잠든 주인을 지키는 두 강아지의 비밀 순찰"],
             ["기획 의도", "같은 집, 두 개의 시선 · 낮은 시점과 스케일로 만든 집 안의 모험 · 겁쟁이처럼 보이던 강아지들의 야간 순찰"],
-            ["담당 역할", "기획 · 스토리보드 · AI 디렉팅 (프롬프트 설계 · 샷 구성) · 편집 · 자막 · 색보정"],
+            ["담당 역할", "1인 제작 · 기획 · 스토리보드 · AI 디렉팅 (프롬프트 설계 · 샷 구성) · 편집 · 자막 · 색보정"],
             ["AI · 소스", "영상·이미지 — Seedance, Google Flow, Runway / 음악 — Suno"],
             ["후반작업", "After Effects, Premiere Pro"],
             ["제작 기간", "2026.09 – 11"]
@@ -81,6 +81,17 @@ window.SITE_DATA = {
         ],
         making: { src: "assets/img/mv-premiere.webp", w: 1600, h: 755, tag: "CREATION / EDITING", text: "실제 Premiere Pro 작업 화면", alt: "Premiere Pro 작업 화면: 소스·프로그램 모니터와 타임라인, 방구석 파이터 MV 프로젝트" }
       },
+      process: [
+        { title: "기획과 장면 구성", text: "이야기와 가사를 장면으로 구성", images: ["01_planning_document"] },
+        { title: "음악 제작", text: "Suno로 음악 제작", images: ["02_suno_music_generation"] },
+        { title: "곡 구간 정리", text: "Premiere 타임라인에 음악 구간 마커 배치", images: ["03_premiere_markers"] },
+        { title: "캐릭터 설계", text: "OWOL 캐릭터의 시각적 기준 설계", images: ["04_owol_character_sheet"] },
+        { title: "스토리보드", text: "장면 구도와 컷 연결 계획", images: ["05_storyboard"] },
+        { title: "생성 전 키프레임 설계", text: "영상 생성 전 장면의 시작과 변화 설계", images: ["06_video_keyframes"] },
+        { title: "AI 영상 생성", text: "설계한 장면을 바탕으로 영상 생성", images: ["07_ai_video_generation"] },
+        { title: "Premiere 편집", text: "생성 소스와 음악을 타임라인에서 편집", images: ["08_premiere_edit_timeline"] },
+        { title: "After Effects 후반작업", text: "타이포그래피와 모션 작업", images: ["09_after_effects_motion"] },
+      ],
       related: { id: "work-kinetic", heading: "같은 노래의 다른 버전", label: "키네틱타이포 보기" },
       docs: [{ label: "기획서", href: "assets/docs/work-1-plan.pdf" }, { label: "사운드 기획서", href: "assets/docs/work-1-sound.pdf" }, { label: "스토리보드", href: "assets/docs/work-1-storyboard.pdf" }, { label: "비주얼 기획서", href: "assets/docs/work-1-visual.pdf" }]
     },
@@ -100,7 +111,7 @@ window.SITE_DATA = {
             ["길이", "약 35초"],
             ["콘셉트", "같은 노래, 가사 타이포 모션으로 다시 만든 버전"],
             ["본편과의 차이", "본편은 이야기·연출 중심, 이 영상은 타이포그래피·모션그래픽 중심"],
-            ["담당 역할", "타이포 · 모션그래픽"],
+            ["담당 역할", "1인 제작 · 타이포 · 모션그래픽"],
             ["AI · 소스", "Seedance, Higgsfield"],
             ["후반작업", "After Effects"]
           ]
@@ -126,7 +137,7 @@ window.SITE_DATA = {
             ["로그라인", "출근하고 패배하고 칼퇴를 꿈꾸는 던전 보스 드래곤"],
             ["슬로건", "보스도 출근하고, 패배하고, 칼퇴를 꿈꾼다."],
             ["기획 의도", "보스 드래곤 × 직장인 공감 · 웅장한 판타지와 현실 일상의 대비 · 출근과 퇴근의 대칭 구성"],
-            ["담당 역할", "기획 · 스토리보드 · AI 디렉팅 (프롬프트 설계 · 샷 구성) · 사운드 · 편집 · 색보정"],
+            ["담당 역할", "1인 제작 · 기획 · 스토리보드 · AI 디렉팅 (프롬프트 설계 · 샷 구성) · 사운드 · 편집 · 색보정"],
             ["AI · 소스", "영상 — Google Flow 생성 / BGM — Suno 제작 / 효과음 — AI 영상 생성 시 포함된 음향 + Pixabay 일부"],
             ["후반작업", "Premiere Pro (사운드 · 편집 · 색보정)"],
             ["사운드 소스", "Suno · Google Flow · Pixabay"]
@@ -151,7 +162,7 @@ window.SITE_DATA = {
             ["길이", "약 1분 45초"],
             ["로그라인", "평온한 주말 × 10000% 과장된 사운드"],
             ["기획 의도", "평온한 화면과 과격한 사운드의 대비 · 같은 행동, 다른 소리 · 완전한 정적으로 끝나는 엔딩"],
-            ["담당 역할", "기획 · 컷 편집 · 사운드 편집 (믹싱 · 보정)"],
+            ["담당 역할", "1인 제작 · 기획 · 컷 편집 · 사운드 편집 (믹싱 · 보정)"],
             ["AI · 스톡 소스", "영상 — Google Flow 생성 + Pixabay 무료 영상 / 효과음 — Pixabay 무료 사운드 / BGM — Suno"],
             ["후반작업", "Premiere Pro (컷 편집 · 믹싱 · 보정)"],
             ["소스 출처", "영상·사운드 소스: Pixabay · Google Flow · Suno"]
@@ -177,9 +188,9 @@ window.SITE_DATA = {
             ["길이", "약 1분 35초"],
             ["로그라인", "고립은 장마로, 관심은 노란 우산으로"],
             ["기획 의도", "해결보다 동행 · 충고보다 공감 · 관심의 확산 · 직접 묘사 대신 장마와 투명화의 은유"],
-            ["담당 역할", "기획 · 스토리보드 · AI 디렉팅 (프롬프트 설계 · 샷 구성) · 사운드 제작 · 편집 · 색보정 · 로토스코핑 · 투명화 합성"],
-            ["AI · 소스", "영상·이미지 — Google Flow, Midjourney 생성 / 음악 — Suno"],
-            ["후반작업", "Premiere Pro (사운드 · 편집 · 색보정) / After Effects (주인공 캐릭터 로토스코핑 · 점진적 투명화 합성)"],
+            ["담당 역할", "1인 제작 · 기획 · 스토리보드 · AI 디렉팅 (프롬프트 설계 · 샷 구성) · BGM 제작 · 사운드 선택·배치 및 보정 · 편집 · 색보정 · 로토스코핑 · 투명화 합성"],
+            ["AI · 소스", "영상·이미지 — Google Flow, Midjourney 생성 / BGM — Suno 제작 / 기존 영상 음원 · 스톡 효과음 활용"],
+            ["후반작업", "Premiere Pro (사운드 파일 선택·배치 및 보정 · 편집 · 색보정) / After Effects (주인공 캐릭터 로토스코핑 · 점진적 투명화 합성)"],
             ["제작 포인트", "점진적 투명화 — 존재감 상실의 시각화"]
           ]
         }
@@ -210,9 +221,9 @@ window.SITE_DATA = {
           ["길이", "16초 · 9:16 · 1080 × 1920 · 24 fps"],
           ["슬로건", "BORN FROM STONE. REFINED BY OAK."],
           ["기획 의도", "하이랜드의 암석과 물, 오크와 앰버를 제품 공개로 잇는 질감 중심 연출"],
-          ["담당 역할", "기획 · 아트 디렉션 · 제품 디자인 · AI 영상 제작 · 편집"],
+          ["담당 역할", "1인 제작 · 기획 · 아트 디렉션 · 제품 디자인 · AI 영상 제작 · 편집"],
           ["AI · 소스", "Seedance 2.5 — 제품 콘셉트와 스토리보드를 바탕으로 광고 샷 생성"],
-          ["후반작업", "Premiere Pro · FFmpeg — 20초·8컷 기획을 16초로 압축 편집 · 출력 규격과 엔딩 타이밍 확인"]
+          ["후반작업", "Premiere Pro · FFmpeg — 편집 · 출력 규격과 엔딩 타이밍 확인"]
         ]
       }],
       visuals: [

@@ -41,6 +41,8 @@
           <li><a href="#home" class="is-current">HOME</a></li>
           <li><a href="#about">ABOUT</a></li>
           <li><a href="#works">WORKS</a></li>
+          <li><a href="#process">PROCESS</a></li>
+          <li><a href="#production-tools">TOOLS</a></li>
           <li><a href="#contact">CONTACT</a></li>
         </ul>
       </nav>
@@ -62,7 +64,7 @@
           <p class="hero-sub">기획부터 연출, 편집, 모션그래픽까지.</p>
           <div class="hero-cta">
             <a class="button" href="#works">VIEW WORKS <span aria-hidden="true">→</span></a>
-            <a class="button button-ghost" href="#process">제작 과정 <span aria-hidden="true">↓</span></a>
+            <a class="button button-ghost" href="work.html?id=work-1#mv-process">뮤직비디오 제작 과정 보기 <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <!-- 하이라이트 릴: 6종(MV · 키네틱 타이포 · 광고 · 일상 · 캠페인 · 브랜드 광고) 각 4초, 총 24초 무음 루프(assets/video/hero-reel.mp4). 챕터 시작 시간은 칩의 data-start(초) -->
@@ -134,16 +136,42 @@
             <source media="(max-width: 700px)" srcset="assets/img/process-m.jpg" width="564" height="833">
             <img src="assets/img/process-pc.jpg" alt="PROCESS 대표 비주얼(디자인 시안): 아이디어가 영상이 되기까지, 기획·스토리보드·편집·최종 영상의 4단계" width="1144" height="434" loading="lazy">
           </picture>
-          <a class="process-cta" href="work.html?id=work-1" aria-label="제작 과정 보기: 방구석 파이터의 비밀 순찰대 상세 페이지로 이동"></a>
+          <a class="process-cta" href="work.html?id=work-1#mv-process" aria-label="제작 과정 보기: 방구석 파이터의 비밀 순찰대 상세 페이지로 이동"></a>
         </figure>
       </div>
     </section>
 
-    <!-- 04 CONTACT -->
+    <section id="production-tools" class="section ai-work-section" aria-labelledby="ai-work-title">
+      <div class="container">
+        <header class="section-head">
+          <h2 id="ai-work-title" class="section-title"><span class="no">04</span> <span class="name">PRODUCTION TOOLS</span></h2>
+        </header>
+        <div class="tools-intro">
+          <div><p class="tools-intro-label">제작 자동화 도구</p><p>영상 제작을 돕는 도구와 자동화 작업</p></div>
+          <img src="assets/img/production-tools-banner.png" alt="" loading="lazy">
+        </div>
+        <ul class="ai-work-list">
+          <li class="ai-work-card">
+            <a class="ai-work-image" href="assets/img/automation/video-quality-report.png" target="_blank" rel="noopener" aria-label="영상 품질 검증 리포트 원본 크게 보기"><img src="assets/img/automation/video-quality-report.png" alt="영상 정보, 검수 상태, 자동 분석 타임라인과 주요 발견 항목이 표시된 영상 검증 리포트" loading="lazy"><span>원본 보기 ↗</span></a>
+            <div class="ai-work-body"><h3>영상 품질 검증 도구</h3><p>영상의 품질 항목을 자동 분석하고, 결과와 확인 지점을 타임라인으로 보여주는 검증 도구.</p><p class="ai-work-note">기준서: 방송 HD (-24 LKFS)</p></div>
+          </li>
+          <li class="ai-work-card">
+            <a class="ai-work-image" href="assets/img/automation/production-studio.png" target="_blank" rel="noopener" aria-label="AI 작업 지시와 관리 화면 원본 크게 보기"><img src="assets/img/automation/production-studio.png" alt="프로젝트와 담당 AI를 선택하는 작업 지시, 일정과 진행 상태, 검토 항목이 표시된 제작실 화면" loading="lazy"><span>원본 보기 ↗</span></a>
+            <div class="ai-work-body"><h3>AI 작업 지시·관리 도구</h3><p>프로젝트와 담당 AI를 선택해 작업을 요청하고, 일정·진행 상태·검토 항목을 함께 관리하는 개인 제작 도구.</p></div>
+          </li>
+          <li class="ai-work-card">
+            <a class="ai-work-image" href="assets/img/automation/lecture-wiki.png" target="_blank" rel="noopener" aria-label="강의 전사파일 위키 화면 원본 크게 보기"><img src="assets/img/automation/lecture-wiki.png" alt="주제별 강의 문서와 강의 내용이 정리된 Obsidian 위키 화면" loading="lazy"><span>원본 보기 ↗</span></a>
+            <div class="ai-work-body"><h3>강의 전사파일 위키 자동화</h3><p>강의 전사파일을 바탕으로 Obsidian 위키 문서를 생성하고 정리하는 자동화.</p></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 05 CONTACT -->
     <section id="contact" class="section section-line">
       <div class="container">
         <header class="section-head">
-          <h2 class="section-title"><span class="no">04</span> <span class="name">CONTACT</span></h2>
+          <h2 class="section-title"><span class="no">05</span> <span class="name">CONTACT</span></h2>
         </header>
         <p class="contact-big">함께 만들 영상, <em>기획부터</em>.</p>
         <p class="contact-sub">채용 제안 · 협업 문의</p>
